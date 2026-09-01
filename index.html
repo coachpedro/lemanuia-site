@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le Manuia — Pacific Islander &amp; Indigenous youth, South King County</title>
+<meta name="description" content="Le Manuia is a Samoan-led 501(c)(3) in South King County, Washington. Volleyball clinics, tutoring, and Gagana Samoa and Siva Samoa classes for Pacific Islander and Indigenous kids. Families pay nothing.">
+<link rel="icon" href="favicon.png" type="image/png">
+<meta property="og:title" content="Le Manuia">
+<meta property="og:description" content="Free volleyball, academic support, and Gagana Samoa for Pacific Islander and Indigenous youth in South King County, Washington.">
+<meta property="og:image" content="logo-lagoon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..900&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --lagoon:#0B5B5A;
+  --gold:#E3A72F;
+  --night:#102827;
+  --cream:#F6F0E5;
+  --cream-2:#EDE5D6;
+
+  --display:"Archivo",system-ui,sans-serif;
+  --body:"Newsreader",Georgia,serif;
+
+  --page:1120px;
+  --gutter:clamp(20px,5vw,56px);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--night);
+  font-family:var(--body);
+  font-size:clamp(17px,1.08vw,18.5px);
+  line-height:1.72;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{
+  font-family:var(--display);
+  font-variation-settings:"wdth" 88;
+  font-weight:800;
+  line-height:1.04;
+  letter-spacing:-.012em;
+  margin:0;
+}
+p{margin:0 0 1.15em}
+a{color:var(--lagoon)}
+.wrap{max-width:var(--page);margin:0 auto;padding-inline:var(--gutter)}
+.prose{max-width:64ch}
+
+/* ---------- nav ---------- */
+header.nav{position:sticky;top:0;z-index:60;background:var(--night)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:13px}
+.nav-in img{height:34px;width:auto;display:block}
+.nav ul{display:flex;gap:clamp(14px,2.3vw,30px);list-style:none;margin:0;padding:0}
+.nav ul a{
+  font-family:var(--display);font-variation-settings:"wdth" 92;
+  color:var(--cream);text-decoration:none;font-size:.9rem;font-weight:600;
+  padding-block:6px;border-bottom:2px solid transparent;
+}
+.nav ul a:hover,.nav ul a:focus-visible{border-bottom-color:var(--gold)}
+@media (max-width:800px){.nav ul{display:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;background:var(--lagoon);color:var(--cream);overflow:hidden}
+.hero .lattice{position:absolute;inset:0;width:100%;height:100%;color:var(--cream);opacity:.13;pointer-events:none}
+.hero .laumei{
+  position:absolute;right:-9%;top:50%;transform:translateY(-50%);
+  width:min(620px,52vw);opacity:.09;pointer-events:none;
+}
+.hero-in{position:relative;padding-block:clamp(66px,11vw,128px) clamp(56px,9vw,106px);max-width:70ch}
+.salu{font-family:var(--body);font-style:italic;font-size:clamp(1.05rem,2vw,1.28rem);color:rgba(246,240,229,.78);margin:0 0 20px}
+.hero h1{font-size:clamp(2.35rem,6.5vw,4.4rem);max-width:16ch}
+.hero .lede{margin-top:26px;max-width:52ch;font-size:clamp(1.03rem,1.5vw,1.17rem);color:rgba(246,240,229,.86)}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+.btn{
+  display:inline-block;padding:13px 26px;text-decoration:none;
+  font-family:var(--display);font-variation-settings:"wdth" 92;
+  font-weight:700;font-size:.94rem;border:2px solid transparent;
+  transition:background .18s,color .18s,border-color .18s;
+}
+.btn-gold{background:var(--gold);color:var(--night);border-color:var(--gold)}
+.btn-gold:hover,.btn-gold:focus-visible{background:#F2B841;border-color:#F2B841}
+.btn-line{background:transparent;color:var(--cream);border-color:rgba(246,240,229,.5)}
+.btn-line:hover,.btn-line:focus-visible{background:rgba(246,240,229,.12);border-color:var(--cream)}
+.btn-dark{background:var(--lagoon);color:var(--cream);border-color:var(--lagoon)}
+.btn-dark:hover,.btn-dark:focus-visible{background:var(--night);border-color:var(--night)}
+
+.band{display:block;width:100%;height:26px}
+
+/* ---------- sections ---------- */
+section{padding-block:clamp(58px,8vw,98px)}
+.eyebrow{
+  font-family:var(--display);font-variation-settings:"wdth" 92;
+  font-weight:700;font-size:.86rem;letter-spacing:.04em;
+  color:var(--lagoon);margin:0 0 14px;
+}
+h2{font-size:clamp(1.9rem,4vw,2.75rem);max-width:19ch;color:var(--lagoon)}
+h3{font-size:1.3rem;color:var(--lagoon)}
+.tint{background:var(--cream-2)}
+.dark{background:var(--night);color:rgba(246,240,229,.86)}
+.dark h2,.dark h3{color:var(--cream)}
+.dark .eyebrow{color:var(--gold)}
+.dark a{color:var(--gold)}
+.lag{background:var(--lagoon);color:rgba(246,240,229,.88)}
+.lag h2,.lag h3{color:var(--cream)}
+.lag .eyebrow{color:rgba(246,240,229,.75)}
+
+/* ---------- programs ---------- */
+.program{
+  display:grid;grid-template-columns:88px 1fr;gap:clamp(20px,4vw,44px);
+  align-items:start;padding-block:34px;border-top:1px solid rgba(11,91,90,.22);
+}
+.program:last-of-type{border-bottom:1px solid rgba(11,91,90,.22)}
+.glyph{width:88px;height:88px;color:var(--lagoon)}
+.program h3{margin-bottom:6px}
+.program .sam{font-style:italic;color:var(--lagoon);font-size:1rem;margin-bottom:10px}
+.program p:last-child{margin-bottom:0;max-width:58ch}
+@media (max-width:620px){.program{grid-template-columns:1fr;gap:12px}.glyph{width:60px;height:60px}}
+
+/* ---------- figures ---------- */
+.figures{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:34px 30px;margin-top:44px}
+.fig{border-top:3px solid var(--gold);padding-top:16px}
+.fig .n{
+  font-family:var(--display);font-variation-settings:"wdth" 85;font-weight:800;
+  font-size:clamp(2.2rem,4.8vw,3rem);color:var(--cream);line-height:1;margin:0;
+}
+.fig .l{margin:10px 0 0;font-size:.96rem;color:rgba(246,240,229,.74);max-width:26ch}
+
+/* ---------- facts ---------- */
+.facts{margin:36px 0 0;padding:0;list-style:none;border-top:1px solid rgba(11,91,90,.25)}
+.facts li{display:grid;grid-template-columns:minmax(155px,.4fr) 1fr;gap:18px;padding:15px 0;border-bottom:1px solid rgba(11,91,90,.25)}
+.facts .k{font-family:var(--display);font-variation-settings:"wdth" 92;font-weight:700;font-size:.9rem;color:var(--lagoon);padding-top:2px}
+.facts .v{margin:0}
+@media (max-width:620px){.facts li{grid-template-columns:1fr;gap:2px}}
+
+.partners{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px;padding:0;list-style:none}
+.partners li{border:1px solid rgba(11,91,90,.35);padding:10px 18px;font-size:.95rem}
+
+/* ---------- give ---------- */
+.give{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:clamp(26px,4vw,48px);margin-top:42px}
+.give p{max-width:36ch}
+
+/* ---------- contact ---------- */
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:clamp(24px,4vw,54px);margin-top:34px}
+.contact-grid h3{font-size:1.02rem;margin-bottom:6px}
+
+footer{background:var(--night);color:rgba(246,240,229,.66);padding-block:44px;font-size:.92rem}
+footer img{height:32px;width:auto;display:block;margin-bottom:22px}
+footer a{color:var(--gold)}
+.foot-in{display:flex;flex-wrap:wrap;gap:16px 40px;justify-content:space-between;align-items:baseline}
+.foot-in p{margin:0;max-width:46ch}
+
+/* ---------- placeholders ---------- */
+.tbd{background:rgba(227,167,47,.28);border-bottom:1px dashed #B4841F;padding:0 .22em;border-radius:2px}
+.dark .tbd,.lag .tbd{background:rgba(227,167,47,.3);border-bottom-color:var(--gold);color:var(--cream)}
+
+/* ---------- a11y ---------- */
+a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.skip{position:absolute;left:-9999px;background:var(--cream);color:var(--night);padding:12px 18px;z-index:99}
+.skip:focus{left:12px;top:12px}
+img{max-width:100%}
+
+@media (prefers-reduced-motion:no-preference){
+  .rise{opacity:0;transform:translateY(14px);animation:rise .8s cubic-bezier(.2,.7,.3,1) forwards}
+  .rise:nth-child(2){animation-delay:.09s}
+  .rise:nth-child(3){animation-delay:.18s}
+  .rise:nth-child(4){animation-delay:.27s}
+  @keyframes rise{to{opacity:1;transform:none}}
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <defs>
+    <pattern id="lattice" width="140" height="140" patternUnits="userSpaceOnUse">
+      <g fill="none" stroke="currentColor" stroke-width="1.1">
+        <path d="M0 70 L70 0 L140 70 L70 140 Z"/>
+        <path d="M0 0 L140 140 M140 0 L0 140"/>
+        <path d="M45 70 L70 45 L95 70 L70 95 Z"/>
+      </g>
+      <g fill="currentColor">
+        <path d="M0 0 L26 0 L0 26 Z"/><path d="M140 0 L114 0 L140 26 Z"/>
+        <path d="M0 140 L26 140 L0 114 Z"/><path d="M140 140 L114 140 L140 114 Z"/>
+        <circle cx="70" cy="70" r="5"/>
+        <circle cx="70" cy="8" r="3"/><circle cx="70" cy="132" r="3"/>
+        <circle cx="8" cy="70" r="3"/><circle cx="132" cy="70" r="3"/>
+      </g>
+    </pattern>
+    <pattern id="edge" width="60" height="26" patternUnits="userSpaceOnUse">
+      <g fill="currentColor">
+        <path d="M0 26 L15 2 L30 26 Z"/><path d="M30 26 L45 2 L60 26 Z"/>
+      </g>
+    </pattern>
+  </defs>
+</svg>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a href="#top" aria-label="Le Manuia, home"><img src="logo-cream.png" alt="Le Manuia"></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#programs">Programs</a></li>
+        <li><a href="#impact">Impact</a></li>
+        <li><a href="#accountability">Accountability</a></li>
+        <li><a href="#support">Support us</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<div class="hero" id="top">
+  <svg class="lattice" aria-hidden="true"><rect width="100%" height="100%" fill="url(#lattice)"/></svg>
+  <img class="laumei" src="symbol-lagoon.png" alt="" aria-hidden="true">
+  <div class="wrap hero-in">
+    <p class="salu rise">Talofa lava.</p>
+    <h1 class="rise">South King County has no shortage of volleyball players. It has a shortage of open courts.</h1>
+    <p class="lede rise">Le Manuia is a Samoan-led nonprofit in Kent, Washington. We run volleyball clinics, tutoring, and Gagana Samoa and Siva Samoa classes for Pacific Islander and Indigenous kids, and we don't charge for any of it.</p>
+    <div class="cta-row rise">
+      <a class="btn btn-gold" href="#support">Fund a season</a>
+      <a class="btn btn-line" href="#programs">See our programs</a>
+    </div>
+  </div>
+  <svg class="band" style="color:var(--gold)" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 600 26"><rect width="600" height="26" fill="url(#edge)"/></svg>
+</div>
+
+<section id="why">
+  <div class="wrap">
+    <p class="eyebrow">Why we exist</p>
+    <h2>Youth sports here has priced itself out of the neighborhoods it recruits from.</h2>
+    <div class="prose" style="margin-top:26px">
+      <p>A season of club ball in this area runs into the thousands, and the clubs are where the coaching and the college exposure sit. So the roster that reaches varsity is often the roster whose parents could buy three years of club first. That is a fee structure, not a talent gap, and everybody in Auburn and Kent can name the kids it left behind.</p>
+      <p>Language and dance are a different kind of shortage. There is very little of either taught anywhere near here, at any price.</p>
+      <p>Le Manuia started in January to close both gaps from inside the community. We don't charge families and we don't means-test anyone. Our coaches and tutors come from the same families we serve, so a kid walking into our gym is already known by name.</p>
+    </div>
+  </div>
+</section>
+
+<section id="programs" class="tint">
+  <div class="wrap">
+    <p class="eyebrow">What we run</p>
+    <h2>What a kid can sign up for right now.</h2>
+
+    <div class="program" style="margin-top:34px">
+      <svg class="glyph" viewBox="0 0 100 100" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="2.4">
+          <circle cx="50" cy="50" r="34"/><path d="M50 16 v68 M16 50 h68"/>
+          <path d="M26 26 L74 74 M74 26 L26 74"/>
+        </g>
+        <circle cx="50" cy="50" r="5" fill="currentColor"/>
+      </svg>
+      <div>
+        <h3>Volleyball clinics and league play</h3>
+        <p class="sam">Ta'aloga</p>
+        <p>Skills clinics and court time outside the club system, with real coaching. We cover the gym, the equipment, and the coaches. Our first clinic filled its roster and no family paid a cent.</p>
+      </div>
+    </div>
+
+    <div class="program">
+      <svg class="glyph" viewBox="0 0 100 100" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="2.4">
+          <path d="M50 12 L88 50 L50 88 L12 50 Z"/><path d="M50 30 L70 50 L50 70 L30 50 Z"/>
+        </g>
+        <g fill="currentColor"><path d="M12 12 L30 12 L12 30 Z"/><path d="M88 88 L70 88 L88 70 Z"/></g>
+      </svg>
+      <div>
+        <h3>Gagana Samoa and Siva Samoa</h3>
+        <p class="sam">O le gagana ma le aganu'u</p>
+        <p>Language classes and traditional dance, taught by elders and practitioners from our own community. Kids learn enough to talk with their grandparents. No school in this district teaches either one.</p>
+      </div>
+    </div>
+
+    <div class="program">
+      <svg class="glyph" viewBox="0 0 100 100" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="2.4">
+          <path d="M18 24 h64 M18 44 h64 M18 64 h44"/><path d="M50 78 L62 90 L86 62"/>
+        </g>
+        <g fill="currentColor"><circle cx="12" cy="24" r="3.5"/><circle cx="12" cy="44" r="3.5"/><circle cx="12" cy="64" r="3.5"/></g>
+      </svg>
+      <div>
+        <h3>Academic support and youth assistance</h3>
+        <p class="sam">A'oa'oga</p>
+        <p>Tutoring and study help, plus help with the things that quietly decide where a kid ends up: Running Start, the Washington College Grant, scholarship deadlines, and forms that assume a parent already knows how the system works. We also give youth assistance awards to students who meet our participation and academic criteria.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="impact" class="dark">
+  <div class="wrap">
+    <p class="eyebrow">Where we are</p>
+    <h2>What we have done so far.</h2>
+    <div class="prose" style="margin-top:24px">
+      <p>We got our 501(c)(3) determination in January 2026 and ran our first clinic as soon as we had a gym. The numbers below are small because we are new. They are also real.</p>
+    </div>
+    <div class="figures">
+      <div class="fig"><p class="n">$0</p><p class="l">Charged to any family, for any program, ever</p></div>
+      <div class="fig"><p class="n">Jan 2026</p><p class="l">501(c)(3) determination and first month of operations</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="accountability">
+  <div class="wrap">
+    <p class="eyebrow">For funders and partners</p>
+    <h2>The details a grant reviewer needs, in one place.</h2>
+    <div class="prose" style="margin-top:24px">
+      <p>Our governance documents are current. If your review needs something that isn't listed here, ask and we'll send it the same week.</p>
+    </div>
+    <ul class="facts">
+      <li><span class="k">Legal name</span><p class="v">Le Manuia</p></li>
+      <li><span class="k">Tax status</span><p class="v">501(c)(3) public charity, determination received January 2026</p></li>
+      <li><span class="k">EIN</span><p class="v">85-3487759</p></li>
+      <li><span class="k">State registration</span><p class="v">Washington State nonprofit corporation; registered with the Secretary of State Charities Program, UBI 604 550 597</p></li>
+      <li><span class="k">Service area</span><p class="v">South King County, Washington — Auburn, Kent, Federal Way, and surrounding communities</p></li>
+      <li><span class="k">Populations served</span><p class="v">Pacific Islander, Native Hawaiian, and Indigenous youth and their families</p></li>
+      <li><span class="k">Fiscal year</span><p class="v">January 1 – December 31</p></li>
+      <li><span class="k">Financial documents</span><p class="v">Form 990, budget, and board-approved financial policies available on request</p></li>
+    </ul>
+
+    <p class="eyebrow" style="margin-top:54px">Our funders and partners</p>
+    <ul class="partners">
+      <li>Puyallup Tribe of Indians Charitable Trust</li>
+    </ul>
+  </div>
+</section>
+
+<section id="support" class="lag">
+  <div class="wrap">
+    <p class="eyebrow">Get involved</p>
+    <h2>Three ways to help.</h2>
+    <div class="give">
+      <div>
+        <h3>Give</h3>
+        <p>Most of what we spend goes to gym rental, equipment, and paying instructors. Donations are tax-deductible as allowed by law.</p>
+        <!-- TODO: replace this mailto with the Stripe checkout link when the donation flow is live -->
+        <a class="btn btn-gold" href="mailto:ama.tuatoo@lemanuia.org?subject=Donating%20to%20Le%20Manuia">Email us to give</a>
+      </div>
+      <div>
+        <h3>Volunteer</h3>
+        <p>We need coaches, tutors, siva and language instructors, and people who can work a clinic day.</p>
+        <a class="btn btn-line" href="#contact">Sign up to help</a>
+      </div>
+      <div>
+        <h3>Partner</h3>
+        <p>If you run a gym, a district program, or a business that wants to sponsor a season, we'd like to hear from you.</p>
+        <a class="btn btn-line" href="#contact">Start a conversation</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="tint">
+  <div class="wrap">
+    <p class="eyebrow">Contact</p>
+    <h2>Talk to us.</h2>
+    <div class="contact-grid">
+      <div>
+        <h3>For families</h3>
+        <p>Ask about enrolling your child, upcoming clinics, or youth assistance.<br>
+        <a href="mailto:ama.tuatoo@lemanuia.org">ama.tuatoo@lemanuia.org</a><br>
+        <a href="tel:+12532612538">(253) 261-2538</a></p>
+      </div>
+      <div>
+        <h3>For funders and press</h3>
+        <p>Ama Tuatoo, Founder<br>
+        <a href="mailto:ama.tuatoo@lemanuia.org">ama.tuatoo@lemanuia.org</a><br>
+        <a href="tel:+12532612538">(253) 261-2538</a></p>
+      </div>
+      <div>
+        <h3>Mail</h3>
+        <p>320 Summit Ave N<br>Kent, WA 98030</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<svg class="band" style="color:var(--gold)" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 600 26"><rect width="600" height="26" fill="url(#edge)"/></svg>
+
+<footer>
+  <div class="wrap">
+    <img src="logo-cream.png" alt="Le Manuia">
+    <div class="foot-in">
+      <p>Le Manuia is a 501(c)(3) nonprofit organization. EIN 85-3487759. Donations are tax-deductible as allowed by law.</p>
+      <p>© <span id="yr">2026</span> Le Manuia · South King County, Washington</p>
+    </div>
+  </div>
+</footer>
+
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>
