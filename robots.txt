@@ -1,2 +1,22 @@
+# Crawlers are allowed here on purpose. Please do not "tighten" this while the
+# site is behind the password page.
+#
+# site.html carries <meta name="robots" content="noindex">. A search engine can
+# only obey that tag if it is allowed to fetch the page and read it. Writing
+# "Disallow: /site.html" here would stop Google fetching the page, which means
+# it would never see the noindex — so anything it already has listed would just
+# sit in the results, uncorrected. Blocking is the slow way to disappear, not
+# the fast one.
+#
+# So: let them crawl, let them read the noindex, let the old listings drop out.
+#
+# The holding page at / is deliberately left indexable. It says nothing but the
+# organisation's name and an email address, and letting it be indexed is what
+# replaces the old full-site listing in search results. To change that, add
+# <meta name="robots" content="noindex"> to index.html as well.
+#
+# When the site goes public: delete the noindex line from site.html. This file
+# can stay exactly as it is.
+
 User-agent: *
 Allow: /

@@ -3,16 +3,86 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Le Manuia — Pacific Islander &amp; Indigenous youth, South King County</title>
-<meta name="description" content="Le Manuia is a Samoan-led 501(c)(3) in South King County, Washington. Volleyball clinics, tutoring, and Gagana Samoa and Siva Samoa classes for Pacific Islander and Indigenous kids. Families pay nothing.">
-<link rel="icon" href="favicon.png" type="image/png">
+<title>Le Manuia</title>
+<!--
+  This page is deliberately left indexable (see robots.txt) — it is what shows
+  up in search results while site.html carries its noindex. So it needs a
+  description of its own, or a search engine has no snippet to show. It says
+  nothing the visible page below does not already say.
+
+  There is no og:image because the repository has no image suited to one: the
+  logo is cream artwork on transparency, which disappears on the white card
+  most apps draw. A proper share image would be a ~1200x630 PNG with a solid
+  lagoon background; drop it in and add the tag when there is one.
+-->
+<meta name="description" content="Le Manuia — our website is not public yet. If you need access, email ama.tuatoo@lemanuia.org.">
 <meta property="og:title" content="Le Manuia">
-<meta property="og:description" content="Free volleyball, academic support, and Gagana Samoa for Pacific Islander and Indigenous youth in South King County, Washington.">
-<meta property="og:image" content="logo-lagoon.png">
+<meta property="og:description" content="Our website is not public yet. If you need access, email ama.tuatoo@lemanuia.org.">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..900&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&display=swap" rel="stylesheet">
+<!--
+  The webfonts are loaded so that they cannot hold this page hostage.
+
+  A plain <link rel="stylesheet"> blocks rendering AND every script below it
+  until it resolves. On site.html that costs a slow visitor a blank moment. On
+  this page it is worse: the password field is right there and typable, but the
+  script that checks it has not run yet, so pressing Enter does nothing useful.
+  Measured with a four-second stall on this request: the gate script ran four
+  seconds late.
+
+  So the stylesheet is fetched as print-only, which keeps the download but
+  takes it off the critical path, and the little script below switches it on
+  once it has actually arrived. The <noscript> copy covers a browser with
+  JavaScript off. Until the fonts land the page sets in Georgia and the system
+  sans, which is where the font stack falls back to anyway.
+-->
+<link id="webfont" rel="stylesheet" media="print" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..900&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&display=swap">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..900&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&display=swap"></noscript>
+<script>
+(function () {
+  var link = document.getElementById('webfont');
+  if (!link) { return; }
+  var apply = function () { link.media = 'all'; };
+  if (link.sheet) { apply(); }
+  else { link.addEventListener('load', apply); }
+})();
+</script>
+
+<!--
+  ============================================================================
+  Le Manuia — holding page.
+
+  WHAT THIS IS, PLAINLY: a curtain, not a lock.
+
+  The site itself lives in site.html, which is an ordinary file on a public web
+  server. Anyone who knows or guesses that address reads it without ever seeing
+  this page, and anyone can read this file with View Source. The password check
+  below is real cryptography (PBKDF2-SHA256, 250,000 iterations), so the
+  password is not written down anywhere in the repository — but all that check
+  decides is whether we navigate. It does not decrypt anything.
+
+  This keeps the unfinished site out of casual view. It is not security. Do not
+  put anything on site.html that would cause harm if a stranger read it, and do
+  not describe this to anyone as securing the site. See README.md.
+
+  This file and site.html agree on two names and nothing else:
+    the sessionStorage key  'lemanuia.unlocked'
+    the window.name marker  'lemanuia-unlocked'   (fallback, see below)
+  Change one, change the other.
+
+  sessionStorage rather than localStorage is deliberate: the unlock is
+  forgotten when the tab closes, so a board member on a shared or library
+  computer does not leave the door standing open behind them.
+
+  To change the password, see README.md and set-password.mjs. Nothing else in
+  this file needs to be touched.
+  ============================================================================
+-->
+
 <style>
+/* Tokens, lifted unchanged from site.html. */
 :root{
   --lagoon:#0B5B5A;
   --gold:#E3A72F;
@@ -28,19 +98,17 @@
 }
 
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
 body{
   margin:0;
-  background:var(--cream);
-  color:var(--night);
+  background:var(--lagoon);
+  color:var(--cream);
   font-family:var(--body);
   font-size:clamp(17px,1.08vw,18.5px);
   line-height:1.72;
   -webkit-font-smoothing:antialiased;
 }
-h1,h2,h3{
+h1{
   font-family:var(--display);
   font-variation-settings:"wdth" 88;
   font-weight:800;
@@ -49,137 +117,251 @@ h1,h2,h3{
   margin:0;
 }
 p{margin:0 0 1.15em}
-a{color:var(--lagoon)}
+img{max-width:100%}
+[hidden]{display:none !important}
 .wrap{max-width:var(--page);margin:0 auto;padding-inline:var(--gutter)}
-.prose{max-width:64ch}
 
-/* ---------- nav ---------- */
-header.nav{position:sticky;top:0;z-index:60;background:var(--night)}
-.nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:13px}
-.nav-in img{height:34px;width:auto;display:block}
-.nav ul{display:flex;gap:clamp(14px,2.3vw,30px);list-style:none;margin:0;padding:0}
-.nav ul a{
-  font-family:var(--display);font-variation-settings:"wdth" 92;
-  color:var(--cream);text-decoration:none;font-size:.9rem;font-weight:600;
-  padding-block:6px;border-bottom:2px solid transparent;
+/* ---------- the field ----------
+   This is site.html's hero, re-composed to fill the window: the same lagoon
+   ground, the same lattice, the same laumei bleeding off the right edge, and
+   the same sawtooth band closing the bottom. Everything sits on one left rail
+   at the site's own gutter, because a ragged left-aligned column on a
+   full-bleed field is the only layout this site has. */
+.field{
+  position:relative;overflow:hidden;
+  background:var(--lagoon);color:var(--cream);
+  display:flex;flex-direction:column;
+  min-height:100vh;
+  min-height:100svh;
 }
-.nav ul a:hover,.nav ul a:focus-visible{border-bottom-color:var(--gold)}
-@media (max-width:800px){.nav ul{display:none}}
+.field .lattice{position:absolute;inset:0;width:100%;height:100%;opacity:.13;pointer-events:none}
 
-/* ---------- hero ---------- */
-.hero{position:relative;background:var(--lagoon);color:var(--cream);overflow:hidden}
-.hero .lattice{position:absolute;inset:0;width:100%;height:100%;color:var(--cream);opacity:.13;pointer-events:none}
-.hero .laumei{
+/* symbol-lagoon.png is a solid #0B5B5A mark on transparency — 98% of its
+   opaque pixels are exactly the lagoon colour. Dropped onto a lagoon ground it
+   paints nothing at all, which is why the watermark is invisible in the hero on
+   site.html too. brightness(0) flattens it to black and invert(1) lifts it to
+   white, so here it reads as a cream watermark alongside the lattice. */
+.field .laumei{
   position:absolute;right:-9%;top:50%;transform:translateY(-50%);
   width:min(620px,52vw);opacity:.09;pointer-events:none;
+  filter:brightness(0) invert(1);
 }
-.hero-in{position:relative;padding-block:clamp(66px,11vw,128px) clamp(56px,9vw,106px);max-width:70ch}
-.salu{font-family:var(--body);font-style:italic;font-size:clamp(1.05rem,2vw,1.28rem);color:rgba(246,240,229,.78);margin:0 0 20px}
-.hero h1{font-size:clamp(2.35rem,6.5vw,4.4rem);max-width:16ch}
-.hero .lede{margin-top:26px;max-width:52ch;font-size:clamp(1.03rem,1.5vw,1.17rem);color:rgba(246,240,229,.86)}
-.cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
-.btn{
-  display:inline-block;padding:13px 26px;text-decoration:none;
-  font-family:var(--display);font-variation-settings:"wdth" 92;
-  font-weight:700;font-size:.94rem;border:2px solid transparent;
-  transition:background .18s,color .18s,border-color .18s;
+.top{position:relative;width:100%;padding-block:clamp(22px,3.4vw,34px) 0}
+.mark{height:clamp(38px,5.2vw,48px);width:auto;display:block}
+.mid{
+  position:relative;width:100%;flex:1;
+  display:flex;align-items:center;
+  padding-block:clamp(40px,7vw,84px);
 }
-.btn-gold{background:var(--gold);color:var(--night);border-color:var(--gold)}
-.btn-gold:hover,.btn-gold:focus-visible{background:#F2B841;border-color:#F2B841}
-.btn-line{background:transparent;color:var(--cream);border-color:rgba(246,240,229,.5)}
-.btn-line:hover,.btn-line:focus-visible{background:rgba(246,240,229,.12);border-color:var(--cream)}
-.btn-dark{background:var(--lagoon);color:var(--cream);border-color:var(--lagoon)}
-.btn-dark:hover,.btn-dark:focus-visible{background:var(--night);border-color:var(--night)}
+.hold{width:100%;max-width:640px}
+.band{display:block;width:100%;height:26px;position:relative}
 
-.band{display:block;width:100%;height:26px}
+/* ---------- type ---------- */
+.salu{
+  font-family:var(--body);font-style:italic;
+  font-size:clamp(1.05rem,2vw,1.28rem);
+  color:rgba(246,240,229,.78);            /* 4.8:1 on the lagoon */
+  margin:0 0 20px;
+}
+/* Between site.html's h1 and h2 scales. At the hero's 4.4rem a housekeeping
+   notice would shout; at the h2 scale the field looks empty. */
+h1{font-size:clamp(2.05rem,5.2vw,3.3rem);max-width:15ch}
+.lede{
+  margin-top:24px;max-width:46ch;
+  font-size:clamp(1.03rem,1.5vw,1.17rem);
+  color:rgba(246,240,229,.86);            /* 5.5:1 */
+}
+.note{margin:0;font-size:.97rem;color:rgba(246,240,229,.86);max-width:48ch}
+.note + .note{margin-top:.8em}
 
-/* ---------- sections ---------- */
-section{padding-block:clamp(58px,8vw,98px)}
-.eyebrow{
+/* Gold text on the lagoon measures 3.7:1 and misses AA for body copy, so links
+   are full-strength cream and the gold does the underlining instead. Same
+   palette, legible ink. */
+a{
+  color:var(--cream);
+  text-decoration-color:var(--gold);
+  text-decoration-thickness:2px;
+  text-underline-offset:3px;
+}
+a:hover{text-decoration-thickness:3px}
+
+/* ---------- the gate ----------
+   Assembled from parts site.html already owns: an eyebrow for the label, the
+   .cta-row flex/gap for the control row, .btn-gold verbatim for the submit,
+   and the .fig gold hairline for the message. Nothing new was invented, so it
+   reads as another block in the column rather than a widget dropped on top.
+   Capped to the measure of the lede above it for the same reason. */
+.gate{margin-top:34px;max-width:30rem}
+.lab-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:11px}
+.lab{
   font-family:var(--display);font-variation-settings:"wdth" 92;
   font-weight:700;font-size:.86rem;letter-spacing:.04em;
-  color:var(--lagoon);margin:0 0 14px;
+  color:rgba(246,240,229,.86);
 }
-h2{font-size:clamp(1.9rem,4vw,2.75rem);max-width:19ch;color:var(--lagoon)}
-h3{font-size:1.3rem;color:var(--lagoon)}
-.tint{background:var(--cream-2)}
-.dark{background:var(--night);color:rgba(246,240,229,.86)}
-.dark h2,.dark h3{color:var(--cream)}
-.dark .eyebrow{color:var(--gold)}
-.dark a{color:var(--gold)}
-.lag{background:var(--lagoon);color:rgba(246,240,229,.88)}
-.lag h2,.lag h3{color:var(--cream)}
-.lag .eyebrow{color:rgba(246,240,229,.75)}
+.row{display:flex;flex-wrap:wrap;align-items:stretch;gap:14px}
 
-/* ---------- programs ---------- */
-.program{
-  display:grid;grid-template-columns:88px 1fr;gap:clamp(20px,4vw,44px);
-  align-items:start;padding-block:34px;border-top:1px solid rgba(11,91,90,.22);
+.pw{
+  flex:1 1 14rem;min-width:0;
+  font-family:var(--display);font-variation-settings:"wdth" 92;
+  font-weight:600;font-size:1rem;line-height:1.72;letter-spacing:.02em;
+  color:var(--cream);caret-color:var(--gold);
+  background:rgba(16,40,39,.30);          /* cream on this well: 8.6:1 */
+  border:2px solid rgba(246,240,229,.62); /* boundary vs the lagoon: 3.6:1 */
+  border-radius:0;-webkit-appearance:none;appearance:none;
+  padding:13px 16px;
+  transition:border-color .18s;
 }
-.program:last-of-type{border-bottom:1px solid rgba(11,91,90,.22)}
-.glyph{width:88px;height:88px;color:var(--lagoon)}
-.program h3{margin-bottom:6px}
-.program .sam{font-style:italic;color:var(--lagoon);font-size:1rem;margin-bottom:10px}
-.program p:last-child{margin-bottom:0;max-width:58ch}
-@media (max-width:620px){.program{grid-template-columns:1fr;gap:12px}.glyph{width:60px;height:60px}}
-
-/* ---------- figures ---------- */
-.figures{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:34px 30px;margin-top:44px}
-.fig{border-top:3px solid var(--gold);padding-top:16px}
-.fig .n{
-  font-family:var(--display);font-variation-settings:"wdth" 85;font-weight:800;
-  font-size:clamp(2.2rem,4.8vw,3rem);color:var(--cream);line-height:1;margin:0;
+.pw:hover{border-color:rgba(246,240,229,.82)}
+.pw:focus{border-color:var(--cream)}
+.pw[aria-invalid="true"]{border-color:var(--gold)}
+.pw:-webkit-autofill{
+  -webkit-text-fill-color:var(--cream);
+  -webkit-box-shadow:0 0 0 1000px #0D4C4B inset;
 }
-.fig .l{margin:10px 0 0;font-size:.96rem;color:rgba(246,240,229,.74);max-width:26ch}
 
-/* ---------- facts ---------- */
-.facts{margin:36px 0 0;padding:0;list-style:none;border-top:1px solid rgba(11,91,90,.25)}
-.facts li{display:grid;grid-template-columns:minmax(155px,.4fr) 1fr;gap:18px;padding:15px 0;border-bottom:1px solid rgba(11,91,90,.25)}
-.facts .k{font-family:var(--display);font-variation-settings:"wdth" 92;font-weight:700;font-size:.9rem;color:var(--lagoon);padding-top:2px}
-.facts .v{margin:0}
-@media (max-width:620px){.facts li{grid-template-columns:1fr;gap:2px}}
+.btn{
+  display:inline-grid;place-items:center;
+  padding:13px 26px;text-decoration:none;cursor:pointer;
+  font-family:var(--display);font-variation-settings:"wdth" 92;
+  font-weight:700;font-size:.94rem;
+  border:2px solid transparent;border-radius:0;
+  transition:background .18s,color .18s,border-color .18s;
+}
+.btn-gold{background:var(--gold);color:var(--night);border-color:var(--gold)} /* 7.3:1 */
+.btn-gold:hover{background:#F2B841;border-color:#F2B841}
+/* Both labels share one grid cell, so the button is sized by the wider of the
+   two and cannot change width when it flips to "Checking". visibility:hidden
+   also drops the inactive label out of the accessibility tree, so the button
+   keeps one correct name. */
+.btn > span{grid-area:1/1;white-space:nowrap}
+.btn .lbl-busy{visibility:hidden}
+.btn.is-busy .lbl-idle{visibility:hidden}
+.btn.is-busy .lbl-busy{visibility:visible}
+/* aria-disabled, never the disabled attribute: a disabled button drops out of
+   the tab order mid-interaction, so a keyboard user hunting for it finds
+   nothing. Pressing it while it is off says why instead of checking. */
+.btn-gold[aria-disabled="true"]{
+  background:rgba(246,240,229,.20);
+  border-color:rgba(246,240,229,.55);
+  color:var(--cream);
+  cursor:default;
+}
 
-.partners{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px;padding:0;list-style:none}
-.partners li{border:1px solid rgba(11,91,90,.35);padding:10px 18px;font-size:.95rem}
+/* The passphrase is long and hyphenated and most people will be typing it on a
+   phone, so there is a way to see what you typed. Text label, not an icon
+   alone, so the state is never carried by colour or by aria-pressed only. */
+.peek{
+  font-family:var(--display);font-variation-settings:"wdth" 92;
+  font-weight:700;font-size:.8rem;letter-spacing:.04em;
+  min-height:44px;min-width:72px;padding:8px 16px;
+  background:transparent;color:var(--cream);
+  border:2px solid rgba(246,240,229,.62);border-radius:0;
+  cursor:pointer;
+  transition:background .18s,border-color .18s;
+}
+.peek:hover{border-color:var(--cream)}
+.peek[aria-pressed="true"]{background:rgba(246,240,229,.16);border-color:var(--cream)}
 
-/* ---------- give ---------- */
-.give{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:clamp(26px,4vw,48px);margin-top:42px}
-.give p{max-width:36ch}
+/* ---------- messages ----------
+   Reserved space, so a message turning up never moves anything around it.
+   Sized for the tallest thing that can appear while somebody is using the
+   form: a failure line that wraps, plus the countdown under it. */
+.msgs{min-height:4.8em;margin-top:20px;max-width:30rem}
+@media (max-width:600px){.msgs{min-height:6.4em}}
+.is-open .msgs{min-height:0}
+.status,.wait{margin:0;font-size:.97rem;line-height:1.5}
+.status{color:var(--cream)}
+.status:not(:empty){border-left:3px solid var(--gold);padding-left:14px}
+.wait{color:rgba(246,240,229,.86)}
+.wait:not(:empty){padding-left:17px}
 
-/* ---------- contact ---------- */
-.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:clamp(24px,4vw,54px);margin-top:34px}
-.contact-grid h3{font-size:1.02rem;margin-bottom:6px}
+.tail{margin-top:clamp(26px,4vw,34px)}
 
-footer{background:var(--night);color:rgba(246,240,229,.66);padding-block:44px;font-size:.92rem}
-footer img{height:32px;width:auto;display:block;margin-bottom:22px}
-footer a{color:var(--gold)}
-.foot-in{display:flex;flex-wrap:wrap;gap:16px 40px;justify-content:space-between;align-items:baseline}
-.foot-in p{margin:0;max-width:46ch}
-
-/* ---------- placeholders ---------- */
-.tbd{background:rgba(227,167,47,.28);border-bottom:1px dashed #B4841F;padding:0 .22em;border-radius:2px}
-.dark .tbd,.lag .tbd{background:rgba(227,167,47,.3);border-bottom-color:var(--gold);color:var(--cream)}
-
-/* ---------- a11y ---------- */
-a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
-.skip{position:absolute;left:-9999px;background:var(--cream);color:var(--night);padding:12px 18px;z-index:99}
-.skip:focus{left:12px;top:12px}
-img{max-width:100%}
+/* ---------- a11y ----------
+   site.html's focus ring is 3px of gold. Gold measures 1.9:1 against cream and
+   sits invisibly on the gold submit button, so the gold ring is sandwiched
+   between two thin night rings. Gold carries the indicator on the lagoon
+   ground, night carries it on the button; one of the two always clears 3:1,
+   and what you see on the field is still the site's gold. */
+a:focus-visible,button:focus-visible,input:focus-visible{
+  outline:3px solid var(--gold);
+  outline-offset:2px;
+  box-shadow:0 0 0 2px var(--night),0 0 0 7px var(--night);
+}
 
 @media (prefers-reduced-motion:no-preference){
-  .rise{opacity:0;transform:translateY(14px);animation:rise .8s cubic-bezier(.2,.7,.3,1) forwards}
-  .rise:nth-child(2){animation-delay:.09s}
-  .rise:nth-child(3){animation-delay:.18s}
-  .rise:nth-child(4){animation-delay:.27s}
+  /* site.html's entrance, with the step held in a custom property instead of
+     nth-child so that inserting an element here does not silently renumber
+     everything below it. This is pure CSS: it does not wait on the script. */
+  .rise{
+    opacity:0;transform:translateY(14px);
+    animation:rise .8s cubic-bezier(.2,.7,.3,1) forwards;
+    animation-delay:calc(var(--i,0) * .09s);
+  }
   @keyframes rise{to{opacity:1;transform:none}}
 }
+
+@media (max-width:460px){
+  .row{flex-direction:column}
+  /* The field's "flex:1 1 14rem" sets a basis along the main axis. Once this
+     row turns into a column that basis is a HEIGHT, and the input grows into a
+     14rem-tall box that pushes the submit button off the bottom of a phone
+     screen. Hand the basis back so it is sized by its own padding again. */
+  .pw{flex:0 0 auto;width:100%}
+  .btn{width:100%}
+  .field .laumei{width:84vw;right:-26%;opacity:.075}
+}
+
+/* Windows High Contrast and friends: hand the palette back to the user. The
+   only thing that re-asserts a brand colour is the block behind the logo,
+   because logo-cream.png is cream artwork that would otherwise vanish into a
+   white ground. */
+@media (forced-colors:active){
+  .lattice,.laumei,.band{display:none}
+  .mark{
+    background:#0B5B5A;padding:10px 14px;
+    width:-moz-fit-content;width:fit-content;
+    forced-color-adjust:none;
+  }
+  .salu,.lede,.note,.lab,.status,.wait{color:CanvasText}
+  .pw{border-color:CanvasText;background:Field;color:FieldText}
+  .btn,.peek{border:2px solid ButtonText;background:ButtonFace;color:ButtonText}
+  .btn-gold[aria-disabled="true"]{color:GrayText;border-color:GrayText}
+  .peek[aria-pressed="true"]{background:Highlight;color:HighlightText;border-color:HighlightText}
+  .status:not(:empty){border-left-color:CanvasText}
+  a:focus-visible,button:focus-visible,input:focus-visible{
+    outline:3px solid Highlight;outline-offset:2px;box-shadow:none;
+  }
+}
 </style>
+
+<!-- With JavaScript off the field cannot check anything, and an inert form
+     would still GET-submit on Enter and put the typed password into the address
+     bar and the browser history. So the form is removed outright and the
+     visitor gets the email address instead. -->
+<noscript><style>
+  #gate{display:none}
+  .msgs{min-height:0}
+</style></noscript>
 </head>
 <body>
 
-<a class="skip" href="#main">Skip to content</a>
+<!--
+  The two patterns from site.html, copied character for character.
 
-<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  One thing to know before editing them: a browser resolves currentColor inside
+  pattern content from where the pattern is DEFINED — this hidden <svg> — and
+  not from the .lattice or .band element that references it. Putting a colour on
+  those elements does nothing. So the colour below is the colour of both the
+  lattice and the sawtooth band, and #102827 (--night) is what site.html paints
+  them today. Changing this one hex changes both, on this page.
+
+  Worth knowing: site.html's markup says style="color:var(--gold)" on its bands,
+  which for the same reason has no effect — those bands are night, not gold. If
+  you ever want them actually gold, the fix is in site.html's hidden <svg>, not
+  on the bands. Matching what the site paints now was the point here.
+-->
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;color:#102827">
   <defs>
     <pattern id="lattice" width="140" height="140" patternUnits="userSpaceOnUse">
       <g fill="none" stroke="currentColor" stroke-width="1.1">
@@ -203,203 +385,607 @@ img{max-width:100%}
   </defs>
 </svg>
 
-<header class="nav">
-  <div class="wrap nav-in">
-    <a href="#top" aria-label="Le Manuia, home"><img src="logo-cream.png" alt="Le Manuia"></a>
-    <nav aria-label="Main">
-      <ul>
-        <li><a href="#programs">Programs</a></li>
-        <li><a href="#impact">Impact</a></li>
-        <li><a href="#accountability">Accountability</a></li>
-        <li><a href="#support">Support us</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
-
-<main id="main">
-
-<div class="hero" id="top">
+<main class="field" id="field">
   <svg class="lattice" aria-hidden="true"><rect width="100%" height="100%" fill="url(#lattice)"/></svg>
   <img class="laumei" src="symbol-lagoon.png" alt="" aria-hidden="true">
-  <div class="wrap hero-in">
-    <p class="salu rise">Talofa lava.</p>
-    <h1 class="rise">South King County has no shortage of volleyball players. It has a shortage of open courts.</h1>
-    <p class="lede rise">Le Manuia is a Samoan-led nonprofit in Kent, Washington. We run volleyball clinics, tutoring, and Gagana Samoa and Siva Samoa classes for Pacific Islander and Indigenous kids, and we don't charge for any of it.</p>
-    <div class="cta-row rise">
-      <a class="btn btn-gold" href="#support">Fund a season</a>
-      <a class="btn btn-line" href="#programs">See our programs</a>
+
+  <div class="wrap top">
+    <img class="mark rise" style="--i:0" src="logo-cream.png" alt="Le Manuia">
+  </div>
+
+  <div class="wrap mid">
+    <div class="hold">
+
+      <p class="salu rise" style="--i:1" lang="sm">Talofa lava.</p>
+
+      <h1 class="rise" style="--i:2">This site isn&rsquo;t public yet.</h1>
+
+      <div class="rise" style="--i:3">
+        <p class="lede" id="lede-locked">We&rsquo;re still finishing it. If you were given a password, it goes below. It holds until you close this tab.</p>
+        <p class="lede" id="lede-open" hidden>This tab is already unlocked.</p>
+      </div>
+
+      <!-- method="post" matters only if the script below fails to run at all:
+           a default GET submit would put the typed password in the address bar,
+           the history and the referrer. A POST to a static host is refused
+           instead, which is the better way to fail. -->
+      <form class="gate rise" style="--i:4" id="gate" method="post" novalidate>
+        <div class="lab-row">
+          <label class="lab" for="pw">Password</label>
+          <button type="button" class="peek" id="peek" aria-pressed="false" aria-controls="pw">Show</button>
+        </div>
+        <div class="row">
+          <input class="pw" id="pw" name="password" type="password"
+                 autocomplete="current-password" autocapitalize="off"
+                 autocorrect="off" spellcheck="false" enterkeyhint="go"
+                 aria-describedby="status" aria-invalid="false">
+          <button class="btn btn-gold" id="go" type="submit">
+            <span class="lbl-idle">Open the site</span>
+            <span class="lbl-busy">Checking</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Shown instead of the form when this tab has already been through.
+           A link, not an automatic redirect: bouncing people forward without
+           warning makes the back button useless, moves a screen-reader or
+           switch user with no notice, and means the owner cannot look at their
+           own holding page without opening a private window. -->
+      <div class="gate" id="open-panel" hidden>
+        <a class="btn btn-gold" id="open-link" href="site.html">Continue to the site</a>
+      </div>
+
+      <div class="msgs">
+        <p class="status" id="status" role="status" aria-live="polite" aria-atomic="true"></p>
+        <!-- The countdown ticks once a second. It is kept out of the
+             accessibility tree on purpose: a live region rewriting itself every
+             second is unusable with a screen reader. #status above announces the
+             start and the end of the wait, once each. -->
+        <p class="wait" id="wait" aria-hidden="true"></p>
+      </div>
+
+      <div class="tail rise" style="--i:5">
+        <p class="note">If you don&rsquo;t have a password, email <a href="mailto:ama.tuatoo@lemanuia.org">ama.tuatoo@lemanuia.org</a>.</p>
+        <noscript>
+          <p class="note">Checking a password needs JavaScript, and it is turned off in this browser. Email us and we will sort it out with you directly.</p>
+        </noscript>
+      </div>
+
     </div>
   </div>
-  <svg class="band" style="color:var(--gold)" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 600 26"><rect width="600" height="26" fill="url(#edge)"/></svg>
-</div>
 
-<section id="why">
-  <div class="wrap">
-    <p class="eyebrow">Why we exist</p>
-    <h2>Youth sports here has priced itself out of the neighborhoods it recruits from.</h2>
-    <div class="prose" style="margin-top:26px">
-      <p>A season of club ball in this area runs into the thousands, and the clubs are where the coaching and the college exposure sit. So the roster that reaches varsity is often the roster whose parents could buy three years of club first. That is a fee structure, not a talent gap, and everybody in Auburn and Kent can name the kids it left behind.</p>
-      <p>Language and dance are a different kind of shortage. There is very little of either taught anywhere near here, at any price.</p>
-      <p>Le Manuia started in January to close both gaps from inside the community. We don't charge families and we don't means-test anyone. Our coaches and tutors come from the same families we serve, so a kid walking into our gym is already known by name.</p>
-    </div>
-  </div>
-</section>
-
-<section id="programs" class="tint">
-  <div class="wrap">
-    <p class="eyebrow">What we run</p>
-    <h2>What a kid can sign up for right now.</h2>
-
-    <div class="program" style="margin-top:34px">
-      <svg class="glyph" viewBox="0 0 100 100" aria-hidden="true">
-        <g fill="none" stroke="currentColor" stroke-width="2.4">
-          <circle cx="50" cy="50" r="34"/><path d="M50 16 v68 M16 50 h68"/>
-          <path d="M26 26 L74 74 M74 26 L26 74"/>
-        </g>
-        <circle cx="50" cy="50" r="5" fill="currentColor"/>
-      </svg>
-      <div>
-        <h3>Volleyball clinics and league play</h3>
-        <p class="sam">Ta'aloga</p>
-        <p>Skills clinics and court time outside the club system, with real coaching. We cover the gym, the equipment, and the coaches. Our first clinic filled its roster and no family paid a cent.</p>
-      </div>
-    </div>
-
-    <div class="program">
-      <svg class="glyph" viewBox="0 0 100 100" aria-hidden="true">
-        <g fill="none" stroke="currentColor" stroke-width="2.4">
-          <path d="M50 12 L88 50 L50 88 L12 50 Z"/><path d="M50 30 L70 50 L50 70 L30 50 Z"/>
-        </g>
-        <g fill="currentColor"><path d="M12 12 L30 12 L12 30 Z"/><path d="M88 88 L70 88 L88 70 Z"/></g>
-      </svg>
-      <div>
-        <h3>Gagana Samoa and Siva Samoa</h3>
-        <p class="sam">O le gagana ma le aganu'u</p>
-        <p>Language classes and traditional dance, taught by elders and practitioners from our own community. Kids learn enough to talk with their grandparents. No school in this district teaches either one.</p>
-      </div>
-    </div>
-
-    <div class="program">
-      <svg class="glyph" viewBox="0 0 100 100" aria-hidden="true">
-        <g fill="none" stroke="currentColor" stroke-width="2.4">
-          <path d="M18 24 h64 M18 44 h64 M18 64 h44"/><path d="M50 78 L62 90 L86 62"/>
-        </g>
-        <g fill="currentColor"><circle cx="12" cy="24" r="3.5"/><circle cx="12" cy="44" r="3.5"/><circle cx="12" cy="64" r="3.5"/></g>
-      </svg>
-      <div>
-        <h3>Academic support and youth assistance</h3>
-        <p class="sam">A'oa'oga</p>
-        <p>Tutoring and study help, plus help with the things that quietly decide where a kid ends up: Running Start, the Washington College Grant, scholarship deadlines, and forms that assume a parent already knows how the system works. We also give youth assistance awards to students who meet our participation and academic criteria.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="impact" class="dark">
-  <div class="wrap">
-    <p class="eyebrow">Where we are</p>
-    <h2>What we have done so far.</h2>
-    <div class="prose" style="margin-top:24px">
-      <p>We got our 501(c)(3) determination in January 2026 and ran our first clinic as soon as we had a gym. The numbers below are small because we are new. They are also real.</p>
-    </div>
-    <div class="figures">
-      <div class="fig"><p class="n">$0</p><p class="l">Charged to any family, for any program, ever</p></div>
-      <div class="fig"><p class="n">Jan 2026</p><p class="l">501(c)(3) determination and first month of operations</p></div>
-    </div>
-  </div>
-</section>
-
-<section id="accountability">
-  <div class="wrap">
-    <p class="eyebrow">For funders and partners</p>
-    <h2>The details a grant reviewer needs, in one place.</h2>
-    <div class="prose" style="margin-top:24px">
-      <p>Our governance documents are current. If your review needs something that isn't listed here, ask and we'll send it the same week.</p>
-    </div>
-    <ul class="facts">
-      <li><span class="k">Legal name</span><p class="v">Le Manuia</p></li>
-      <li><span class="k">Tax status</span><p class="v">501(c)(3) public charity, determination received January 2026</p></li>
-      <li><span class="k">EIN</span><p class="v">85-3487759</p></li>
-      <li><span class="k">State registration</span><p class="v">Washington State nonprofit corporation; registered with the Secretary of State Charities Program, UBI 604 550 597</p></li>
-      <li><span class="k">Service area</span><p class="v">South King County, Washington — Auburn, Kent, Federal Way, and surrounding communities</p></li>
-      <li><span class="k">Populations served</span><p class="v">Pacific Islander, Native Hawaiian, and Indigenous youth and their families</p></li>
-      <li><span class="k">Fiscal year</span><p class="v">January 1 – December 31</p></li>
-      <li><span class="k">Financial documents</span><p class="v">Form 990, budget, and board-approved financial policies available on request</p></li>
-    </ul>
-
-    <p class="eyebrow" style="margin-top:54px">Our funders and partners</p>
-    <ul class="partners">
-      <li>Puyallup Tribe of Indians Charitable Trust</li>
-    </ul>
-  </div>
-</section>
-
-<section id="support" class="lag">
-  <div class="wrap">
-    <p class="eyebrow">Get involved</p>
-    <h2>Three ways to help.</h2>
-    <div class="give">
-      <div>
-        <h3>Give</h3>
-        <p>Most of what we spend goes to gym rental, equipment, and paying instructors. Donations are tax-deductible as allowed by law.</p>
-        <!-- TODO: replace this mailto with the Stripe checkout link when the donation flow is live -->
-        <a class="btn btn-gold" href="mailto:ama.tuatoo@lemanuia.org?subject=Donating%20to%20Le%20Manuia">Email us to give</a>
-      </div>
-      <div>
-        <h3>Volunteer</h3>
-        <p>We need coaches, tutors, siva and language instructors, and people who can work a clinic day.</p>
-        <a class="btn btn-line" href="#contact">Sign up to help</a>
-      </div>
-      <div>
-        <h3>Partner</h3>
-        <p>If you run a gym, a district program, or a business that wants to sponsor a season, we'd like to hear from you.</p>
-        <a class="btn btn-line" href="#contact">Start a conversation</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="contact" class="tint">
-  <div class="wrap">
-    <p class="eyebrow">Contact</p>
-    <h2>Talk to us.</h2>
-    <div class="contact-grid">
-      <div>
-        <h3>For families</h3>
-        <p>Ask about enrolling your child, upcoming clinics, or youth assistance.<br>
-        <a href="mailto:ama.tuatoo@lemanuia.org">ama.tuatoo@lemanuia.org</a><br>
-        <a href="tel:+12532612538">(253) 261-2538</a></p>
-      </div>
-      <div>
-        <h3>For funders and press</h3>
-        <p>Ama Tuatoo, Founder<br>
-        <a href="mailto:ama.tuatoo@lemanuia.org">ama.tuatoo@lemanuia.org</a><br>
-        <a href="tel:+12532612538">(253) 261-2538</a></p>
-      </div>
-      <div>
-        <h3>Mail</h3>
-        <p>320 Summit Ave N<br>Kent, WA 98030</p>
-      </div>
-    </div>
-  </div>
-</section>
-
+  <svg class="band" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 600 26"><rect width="600" height="26" fill="url(#edge)"/></svg>
 </main>
 
-<svg class="band" style="color:var(--gold)" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 600 26"><rect width="600" height="26" fill="url(#edge)"/></svg>
+<script>
+/* ======================================================================
+   Le Manuia holding page.
 
-<footer>
-  <div class="wrap">
-    <img src="logo-cream.png" alt="Le Manuia">
-    <div class="foot-in">
-      <p>Le Manuia is a 501(c)(3) nonprofit organization. EIN 85-3487759. Donations are tax-deductible as allowed by law.</p>
-      <p>© <span id="yr">2026</span> Le Manuia · South King County, Washington</p>
-    </div>
-  </div>
-</footer>
+   Read the note at the top of this file before changing anything here.
+   Short version: this is a curtain, not a lock, and the code below does
+   not pretend otherwise.
 
-<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+   Written in plain ES5-shaped JavaScript on purpose. If an old browser
+   cannot parse this block then nothing works, including the message
+   that would have explained why. Everything modern this page needs
+   (WebCrypto, promises, TextEncoder) is feature-tested at run time
+   instead, so a browser that cannot cope is told so.
+   ====================================================================== */
+(function () {
+  'use strict';
+
+  /* ---- fixed values -------------------------------------------------
+     PBKDF2-SHA256. The password is not in this file and is not
+     recoverable from these numbers in any practical amount of time.
+     Regenerate all three with:  node set-password.mjs
+     ------------------------------------------------------------------ */
+  var ITERATIONS   = 250000;
+  var SALT_HEX     = '1259204676dd62e9f063261aeb0f735c';
+  var EXPECTED_HEX = '7068b44b6b23fdb77e4205265f9a53d0c6ccd42824e6c12e0d7d488ff2c3189d';
+
+  var FLAG_KEY     = 'lemanuia.unlocked';   /* sessionStorage, per tab */
+  var FLAG_VALUE   = '1';
+  var NAME_FLAG    = 'lemanuia-unlocked';   /* window.name fallback    */
+  var THROTTLE_KEY = 'lemanuia.gate';
+  var DEFAULT_NEXT = 'site.html';
+  var MAX_NEXT_LEN = 300;
+  var MAX_WAIT_MS  = 30000;
+  var CONTACT      = 'ama.tuatoo@lemanuia.org';
+
+  var form     = document.getElementById('gate');
+  var input    = document.getElementById('pw');
+  var button   = document.getElementById('go');
+  var peek     = document.getElementById('peek');
+  var statusEl = document.getElementById('status');
+  var waitEl   = document.getElementById('wait');
+  var panel    = document.getElementById('open-panel');
+  var openLink = document.getElementById('open-link');
+  var ledeLock = document.getElementById('lede-locked');
+  var ledeOpen = document.getElementById('lede-open');
+  var field    = document.getElementById('field');
+  if (!form || !input || !button) { return; }
+
+  /* ---- session storage, which is allowed to be missing --------------
+     Safari in Lockdown Mode, Firefox with cookies blocked and some
+     in-app browsers throw on the property access itself, not just on
+     setItem, so every touch goes through these. ---------------------- */
+  function ssGet(key) {
+    try { return window.sessionStorage.getItem(key); } catch (e) { return null; }
+  }
+  /* True only if the value reads back. A quota error, a private-mode stub
+     that silently drops writes, and a hard throw all come back false — we
+     have to know, because navigating on to a page whose guard cannot see
+     the flag would bounce the visitor straight back here for ever. */
+  function ssSet(key, value) {
+    try {
+      window.sessionStorage.setItem(key, value);
+      return window.sessionStorage.getItem(key) === value;
+    } catch (e) { return false; }
+  }
+  function ssDel(key) {
+    try { window.sessionStorage.removeItem(key); } catch (e) {}
+  }
+  var storageWorks = ssSet('lemanuia.probe', '1');
+  if (storageWorks) { ssDel('lemanuia.probe'); }
+
+  function nameFlagSet() {
+    try { return window.name === NAME_FLAG; } catch (e) { return false; }
+  }
+  function isUnlocked() {
+    return ssGet(FLAG_KEY) === FLAG_VALUE || nameFlagSet();
+  }
+
+  /* ---- where to send them once they are through ---------------------
+     site.html's guard bounces a locked-out visitor here as
+     index.html?next=<encodeURIComponent(relative path)>. That value
+     arrives in a link somebody else can write, so it is hostile input.
+     An open redirect on a page people are told to trust would be a real
+     bug, curtain or not, so it is checked against a deliberately narrow
+     rule rather than merely "looks relative". ----------------------- */
+  function rawNextParam() {
+    try {
+      if (window.URLSearchParams) {
+        return new URLSearchParams(window.location.search).get('next');
+      }
+      var m = /[?&]next=([^&]*)/.exec(window.location.search);
+      return m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : null;
+    } catch (e) {
+      /* decodeURIComponent throws on a malformed escape such as "%zz". */
+      return null;
+    }
+  }
+
+  var BSLASH = String.fromCharCode(92);
+  var CTRL_CHARS = /[\u0000-\u001F\u007F-\u009F\u2028\u2029]/;
+  var DOTDOT = /(^|\/)\.\.(\/|$)/;
+
+  function validNext(value) {
+    if (typeof value !== 'string') { return null; }
+    if (value === '' || value.length > MAX_NEXT_LEN) { return null; }
+    /* Control characters and the Unicode line separators. Some of these
+       are silently stripped by URL parsers rather than rejected, which is
+       how a string that looks safe here becomes a different URL later. */
+    if (CTRL_CHARS.test(value)) { return null; }
+    if (value.indexOf(BSLASH) !== -1) { return null; }  /* some parsers read a backslash as a slash */
+    if (value.charAt(0) === '/') { return null; }      /* absolute, and so also //evil.example */
+    if (value.indexOf(':') !== -1) { return null; }    /* kills javascript:, data:, https: outright.
+                                                          Blunt: no path on this site needs a colon. */
+    if (!/^[A-Za-z0-9._~!$&'()*+,;=@\/?#%-]+$/.test(value)) { return null; }
+    if (/%(?![0-9A-Fa-f]{2})/.test(value)) { return null; }  /* stray "%" */
+    if (DOTDOT.test(value)) { return null; }                 /* no climbing out */
+
+    /* Percent-encoding is where an "already validated" string turns back
+       into something else, so keep decoding until it stops changing and apply
+       the same structural checks at every level. One decode is not enough:
+       "%252F%252Fevil.example" arrives from URLSearchParams as
+       "%2F%2Fevil.example", which passes every text check above, and only the
+       second decode reveals "//evil.example". Real open redirects live here. */
+    var step = value;
+    for (var pass = 0; pass < 4; pass++) {
+      var decoded;
+      try { decoded = decodeURIComponent(step); } catch (e) { return null; }
+      if (decoded === step) { break; }
+      step = decoded;
+      if (step.charAt(0) === '/') { return null; }
+      if (step.indexOf(BSLASH) !== -1) { return null; }
+      if (step.indexOf(':') !== -1) { return null; }
+      if (CTRL_CHARS.test(step)) { return null; }
+      if (DOTDOT.test(step)) { return null; }
+    }
+
+    /* Resolve it and check the result, not just the text. */
+    var url;
+    try { url = new URL(value, window.location.href); } catch (e) { return null; }
+    if (url.protocol !== window.location.protocol) { return null; }
+    if (url.host !== window.location.host) { return null; }
+    /* Stay in this page's own directory or below it, so a stack of "../"
+       cannot walk out of a GitHub Pages project folder. */
+    var base = window.location.pathname.replace(/[^\/]*$/, '');
+    if (url.pathname.indexOf(base) !== 0) { return null; }
+    /* Never point back at this page: that is a redirect loop. Both
+       spellings, because the splash answers to "/" and to "/index.html". */
+    if (url.pathname === window.location.pathname) { return null; }
+    if (url.pathname === base + 'index.html') { return null; }
+    return value;
+  }
+
+  var destination = DEFAULT_NEXT;
+  if (window.URL) {
+    var candidate = validNext(rawNextParam());
+    if (candidate) { destination = candidate; }
+  }
+  openLink.setAttribute('href', destination);
+
+  /* ---- capability check ---------------------------------------------
+     crypto.subtle exists only in a secure context. https and
+     http://localhost are secure; plain http on a real host is not.
+     Opening the file straight off the disk is the awkward one and
+     browsers disagree — Chrome and Firefox count file:// as trustworthy
+     so the check works, Safari does not so it fails. Either way the page
+     says which it is instead of looking broken. ---------------------- */
+  function cryptoAvailable() {
+    return !!(window.Promise && window.Uint8Array && window.TextEncoder &&
+              window.crypto && window.crypto.subtle &&
+              typeof window.crypto.subtle.importKey === 'function' &&
+              typeof window.crypto.subtle.deriveBits === 'function');
+  }
+
+  function unsupportedReason() {
+    if (window.location.protocol === 'file:') {
+      return 'This page was opened straight from a file, and this browser switches off the ' +
+             'cryptography the password check needs when you do that. Open the https address ' +
+             'instead, or email ' + CONTACT + '.';
+    }
+    if (window.isSecureContext === false) {
+      return 'This page is not on a secure connection, so the browser has switched off the ' +
+             'cryptography the password check needs. Open the https address instead.';
+    }
+    return 'This browser cannot run the password check. Email ' + CONTACT + ' and we will send ' +
+           'you what you need another way.';
+  }
+
+  /* ---- bytes --------------------------------------------------------- */
+  function hexToBytes(hex) {
+    var out = new Uint8Array(hex.length / 2);
+    for (var i = 0; i < out.length; i++) {
+      out[i] = parseInt(hex.substr(i * 2, 2), 16);
+    }
+    return out;
+  }
+
+  /* Constant-time-style: always walks the whole array, no early exit on
+     the first differing byte. Cheap, so it is done properly even though
+     the expected key is sitting in plain sight a few lines above. */
+  function sameBytes(a, b) {
+    if (a.length !== b.length) { return false; }
+    var diff = 0;
+    for (var i = 0; i < a.length; i++) { diff |= a[i] ^ b[i]; }
+    return diff === 0;
+  }
+
+  function derive(text) {
+    /* NFKC first: that is the form the stored key was computed from, so a
+       password typed with composed rather than decomposed accents, or
+       pasted with full-width characters from a phone keyboard, matches. */
+    var normalised = text.normalize ? text.normalize('NFKC') : text;
+    var bytes = new TextEncoder().encode(normalised);
+    return window.crypto.subtle
+      .importKey('raw', bytes, { name: 'PBKDF2' }, false, ['deriveBits'])
+      .then(function (key) {
+        return window.crypto.subtle.deriveBits({
+          name: 'PBKDF2',
+          salt: hexToBytes(SALT_HEX),
+          iterations: ITERATIONS,
+          hash: 'SHA-256'
+        }, key, 256);
+      })
+      .then(function (bits) {
+        return sameBytes(new Uint8Array(bits), hexToBytes(EXPECTED_HEX));
+      });
+  }
+
+  /* One retry with the surrounding whitespace removed. People paste this
+     out of an email and pick up a trailing space or newline, and that is
+     not a different password in any sense worth enforcing. It only runs
+     after the exact input has already failed, so the happy path is
+     untouched. */
+  function check(text) {
+    return derive(text).then(function (ok) {
+      var trimmed = text.replace(/^\s+|\s+$/g, '');
+      if (ok || trimmed === text || trimmed === '') { return ok; }
+      return derive(trimmed);
+    });
+  }
+
+  /* ---- throttle -------------------------------------------------------
+     Friction, not protection. Be clear about what this is: it slows down
+     a person, or a naive script, typing guesses into this form. It does
+     nothing whatsoever about someone who copies the two hex strings above
+     and grinds them offline on their own machine, or who simply requests
+     site.html directly and never comes here at all. It is here so a bored
+     guesser gives up sooner, and for no other reason.
+
+     First mistake is free — a mistyped passphrase should not cost a wait.
+     After that: 1s, 2s, 4s, 8s, 16s, capped at 30s. Kept in sessionStorage
+     so a reload does not wipe it, with an in-memory copy for browsers
+     where storage throws. ---------------------------------------------- */
+  var memoryThrottle = { fails: 0, until: 0 };
+
+  function readThrottle() {
+    var raw = ssGet(THROTTLE_KEY);
+    if (raw) {
+      try {
+        var parsed = JSON.parse(raw);
+        if (parsed && typeof parsed.fails === 'number' && typeof parsed.until === 'number') {
+          memoryThrottle = { fails: parsed.fails, until: parsed.until };
+        }
+      } catch (e) { /* corrupt value: fall through to whatever is in memory */ }
+    }
+    /* A stored time far in the future — a changed system clock, or a
+       hand-edited value — must not lock the form out permanently. */
+    var ceiling = Date.now() + MAX_WAIT_MS;
+    if (memoryThrottle.until > ceiling) { memoryThrottle.until = ceiling; }
+    if (!(memoryThrottle.fails >= 0)) { memoryThrottle.fails = 0; }
+    return memoryThrottle;
+  }
+
+  function writeThrottle(fails, until) {
+    memoryThrottle = { fails: fails, until: until };
+    ssSet(THROTTLE_KEY, JSON.stringify(memoryThrottle));
+  }
+
+  function clearThrottle() {
+    memoryThrottle = { fails: 0, until: 0 };
+    ssDel(THROTTLE_KEY);
+  }
+
+  function waitFor(fails) {
+    if (fails <= 1) { return 0; }
+    return Math.min(MAX_WAIT_MS, Math.pow(2, fails - 2) * 1000);
+  }
+
+  function remainingMs() {
+    return Math.max(0, readThrottle().until - Date.now());
+  }
+
+  function seconds(count) {
+    return count + (count === 1 ? ' second' : ' seconds');
+  }
+
+  /* ---- screen --------------------------------------------------------- */
+  var mode = 'ready';   /* ready | busy | cooling | unsupported | unlocked */
+  var timer = null;
+
+  function say(text) { statusEl.textContent = text; }   /* textContent, never innerHTML */
+  function showWait(text) { waitEl.textContent = text; }
+
+  function render() {
+    var off = (mode !== 'ready');
+    button.setAttribute('aria-disabled', off ? 'true' : 'false');
+    button.setAttribute('aria-busy', mode === 'busy' ? 'true' : 'false');
+    if (mode === 'busy') { button.classList.add('is-busy'); }
+    else { button.classList.remove('is-busy'); }
+    input.readOnly = (mode === 'busy');
+
+    /* The copy has to agree with what is on screen: no "it goes below"
+       above a panel with no field in it. */
+    var through = (mode === 'unlocked');
+    form.hidden = through;
+    panel.hidden = !through;
+    ledeLock.hidden = through;
+    ledeOpen.hidden = !through;
+    if (through) { field.classList.add('is-open'); }
+    else { field.classList.remove('is-open'); }
+  }
+
+  function stopTimer() {
+    if (timer !== null) { window.clearInterval(timer); timer = null; }
+    showWait('');
+  }
+
+  function tick() {
+    var left = remainingMs();
+    if (left <= 0) {
+      stopTimer();
+      mode = 'ready';
+      render();
+      say('You can try again.');
+      return;
+    }
+    showWait('Another ' + seconds(Math.ceil(left / 1000)) + '.');
+  }
+
+  function startCooldown() {
+    stopTimer();
+    mode = 'cooling';
+    render();
+    tick();
+    timer = window.setInterval(tick, 250);
+  }
+
+  /* ---- failure and success -------------------------------------------- */
+  function fail() {
+    var fails = readThrottle().fails + 1;
+    var wait = waitFor(fails);
+    writeThrottle(fails, Date.now() + wait);
+
+    input.value = '';
+    input.setAttribute('aria-invalid', 'true');
+
+    /* Focus first, message second. Moving focus into the field while the
+       described region is still empty means the field announces its label,
+       and the live region then speaks the error once. Writing the text and
+       moving focus in the same tick makes several screen readers say it
+       twice. */
+    try { input.focus(); } catch (e) {}
+
+    window.setTimeout(function () {
+      if (wait > 0) {
+        say('That password is not right. Try again in about ' + seconds(Math.round(wait / 1000)) + '.');
+        startCooldown();
+      } else {
+        mode = 'ready';
+        render();
+        say('That password is not right.');
+      }
+    }, 80);
+  }
+
+  function succeed() {
+    input.value = '';
+    clearThrottle();
+
+    var stored = ssSet(FLAG_KEY, FLAG_VALUE);
+    if (!stored) {
+      /* sessionStorage is blocked. window.name survives a navigation
+         within the same tab and works where storage does not, so it
+         carries the unlock across to site.html. It holds the marker and
+         nothing else — never the password — and it dies with the tab. */
+      try { window.name = NAME_FLAG; } catch (e) {}
+    }
+
+    if (!stored && !nameFlagSet()) {
+      /* Right password, but nothing will remember it, and site.html would
+         send them straight back here. Stop and explain rather than start
+         a loop the visitor cannot break. */
+      mode = 'ready';
+      render();
+      say('The password was right, but this browser is blocking the storage needed to remember ' +
+          'it, so the site would send you straight back here. Try an ordinary (not private) ' +
+          'window, or email ' + CONTACT + '.');
+      return;
+    }
+
+    /* Show the way through first, then navigate. If the navigation is slow
+       or blocked, the visitor is looking at a working link rather than a
+       frozen button. */
+    mode = 'unlocked';
+    stopTimer();
+    render();
+    say('Unlocked. Taking you through.');
+
+    /* replace(), not assign(): this page does not go into history, so Back
+       from the site goes wherever they came from instead of bouncing off
+       the gate. */
+    try {
+      window.location.replace(destination);
+    } catch (e) {
+      say('Unlocked. Use the Continue button.');
+    }
+  }
+
+  /* ---- the attempt ----------------------------------------------------- */
+  function attempt() {
+    /* Every route in funnels through this one check: a click, Enter in the
+       field, and a second Enter while the first derivation is still
+       running. A disabled submit button does not reliably stop implicit
+       form submission, so this is the real guard. */
+    if (mode !== 'ready') {
+      if (mode === 'cooling') {
+        say('Still waiting. Try again in ' + seconds(Math.ceil(remainingMs() / 1000)) + '.');
+      }
+      return;
+    }
+
+    var typed = input.value;
+    if (!typed) {
+      input.setAttribute('aria-invalid', 'true');
+      try { input.focus(); } catch (e) {}
+      window.setTimeout(function () { say('Type the password first.'); }, 80);
+      return;
+    }
+
+    mode = 'busy';
+    render();
+    input.setAttribute('aria-invalid', 'false');
+    showWait('');
+    /* The derivation takes a couple of hundred milliseconds by design.
+       Say so, or the button looks dead. */
+    say('Checking.');
+
+    check(typed).then(function (ok) {
+      if (ok) { succeed(); } else { fail(); }
+    }, function () {
+      /* importKey or deriveBits rejected: a hardened browser, an
+         extension, a secure context revoked mid-session. Not a wrong
+         password, so it does not count against the throttle. */
+      mode = 'ready';
+      render();
+      input.value = '';
+      say('The browser refused to run the password check. Email ' + CONTACT + '.');
+      try { input.focus(); } catch (e) {}
+    });
+  }
+
+  /* ---- wiring (no inline handlers anywhere) ---------------------------- */
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();   /* no query string, and no reload mid-check */
+    attempt();
+  });
+
+  input.addEventListener('input', function () {
+    input.setAttribute('aria-invalid', 'false');
+    if (mode === 'ready' && statusEl.textContent) { say(''); }
+  });
+
+  peek.addEventListener('click', function () {
+    var showing = peek.getAttribute('aria-pressed') === 'true';
+    peek.setAttribute('aria-pressed', showing ? 'false' : 'true');
+    peek.textContent = showing ? 'Show' : 'Hide';
+    input.setAttribute('type', showing ? 'password' : 'text');
+    /* Changing type sends the caret to the end in some browsers; put it
+       back where it was. */
+    var v = input.value;
+    try { input.setSelectionRange(v.length, v.length); } catch (e) {}
+  });
+
+  /* ---- state on arrival, and on arriving back -------------------------- */
+  function syncState() {
+    stopTimer();
+
+    if (isUnlocked()) {
+      mode = 'unlocked';
+      render();
+      say('');
+      return;
+    }
+
+    if (!cryptoAvailable()) {
+      mode = 'unsupported';
+      render();
+      say(unsupportedReason());
+      return;
+    }
+
+    mode = 'ready';
+    render();
+    say('');
+
+    if (!storageWorks) {
+      say('This browser is blocking session storage. The password will still work in this tab, ' +
+          'but every new tab will ask again.');
+    }
+
+    if (remainingMs() > 0) {
+      say('Too many tries. Wait a moment before trying again.');
+      startCooldown();
+    }
+
+    /* No autofocus, deliberately. On a 320px phone it throws the keyboard
+       over the whole screen before the visitor has read a word, and with a
+       screen reader it drops them into a form field before the heading has
+       been announced. The field is two tab stops away. */
+  }
+
+  /* pageshow as well as the initial run: a Back navigation can restore
+     this page from the back/forward cache with the button frozen in its
+     "Checking" state and a stale countdown running. This resets both. */
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted || mode === 'busy') { syncState(); }
+  });
+
+  syncState();
+})();
+</script>
 </body>
 </html>
