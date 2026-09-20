@@ -3,6 +3,11 @@
 The Le Manuia website. Plain HTML — no build step, no npm install, nothing to
 compile. What is in this folder is exactly what gets served.
 
+It is hosted on Vercel, which redeploys automatically whenever a change lands
+on the `main` branch. Editing a file here and committing it is all it takes;
+lemanuia.org updates a minute or so later. Work committed to any other branch
+will not appear on the live site until it reaches `main`.
+
 The site is currently **behind a password page.**
 
 ---
@@ -85,7 +90,7 @@ That redraws the card from `logo-cream.png` and `symbol-lagoon.png` and
 overwrites `share-card.png`. Commit the new file.
 
 One catch worth knowing: the pages point at the card by its full web address,
-`https://lemanuia.org/share-card.png`, because Facebook and the rest fetch it
+`https://www.lemanuia.org/share-card.png`, because Facebook and the rest fetch it
 from their own servers and a short path like `share-card.png` means nothing to
 them. If the site ever moves to a different domain, those addresses have to
 move with it — they are in the `og:image` and `og:url` lines near the top of
@@ -144,7 +149,8 @@ The rule to carry forward: **do not add anything to `site.html` that would
 actually hurt if a stranger read it** — no family names or photos of kids
 without permission, no home addresses, no bank or grant details, no board
 documents. If you ever need to host something like that, it needs a real login,
-which needs something other than GitHub Pages.
+and a real login needs a server that can refuse to send the page — which a
+static host cannot do.
 
 **Give the password out freely to the people who need it.** Board, funders,
 partners. It is there to keep the site quiet, not secret, and anyone who has it
