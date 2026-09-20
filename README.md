@@ -15,6 +15,8 @@ The site is currently **behind a password page.**
 | `site.html` | The **actual site** — programs, impact, accountability, contact. Everything you had before. |
 | `set-password.mjs` | A small tool for changing the password. Only needed when you want to change it. |
 | `robots.txt` | Instructions for Google. Read the comments in it before changing it. |
+| `share-card.png` | The picture that shows up when someone pastes a link to the site into email, a text message, Slack or Facebook. |
+| `build-card.py` | Redraws `share-card.png`. Only needed if the logo changes — see below. |
 | `logo-cream.png`, `symbol-lagoon.png`, `favicon.png` | Images. Both pages use them. |
 
 **The one thing to remember: your site content lives in `site.html` now.**
@@ -65,6 +67,32 @@ the password or something is broken.
 
 If you would rather not install anything, ask whoever helps you with the site
 to run it — they do not need the old password to set a new one.
+
+## The share picture
+
+`share-card.png` is what email, iMessage, Slack, Facebook and LinkedIn show
+when someone pastes a link to the site. It is the logo on the lagoon
+background, and it is already wired into both pages.
+
+You only need to touch it if the logo changes. Then, with Python and Pillow
+installed (`pip install Pillow`):
+
+```
+python3 build-card.py
+```
+
+That redraws the card from `logo-cream.png` and `symbol-lagoon.png` and
+overwrites `share-card.png`. Commit the new file.
+
+One catch worth knowing: the pages point at the card by its full web address,
+`https://lemanuia.org/share-card.png`, because Facebook and the rest fetch it
+from their own servers and a short path like `share-card.png` means nothing to
+them. If the site ever moves to a different domain, those addresses have to
+move with it — they are in the `og:image` and `og:url` lines near the top of
+both `index.html` and `site.html`.
+
+Link previews are cached hard by every one of these services. If you change the
+card and an old one keeps appearing, that is their cache, not your site.
 
 ## Taking the password page down when you launch
 

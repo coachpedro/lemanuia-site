@@ -96,9 +96,26 @@
 <title>Le Manuia — Pacific Islander &amp; Indigenous youth, South King County</title>
 <meta name="description" content="Le Manuia is a Samoan-led 501(c)(3) in South King County, Washington. Volleyball clinics, tutoring, and Gagana Samoa and Siva Samoa classes for Pacific Islander and Indigenous kids. Families pay nothing.">
 <link rel="icon" href="favicon.png" type="image/png">
+<!--
+  Share card. Two things that were wrong before and are easy to get wrong again:
+
+  1. og:image MUST be an absolute URL. Facebook, LinkedIn, Slack and iMessage
+     fetch it from their own servers, with no page to resolve a relative path
+     against. "logo-lagoon.png" resolved to nothing for them even when a file
+     by that name existed — and none did.
+  2. The file it named was never in the repository. share-card.png is, and
+     build-card.py regenerates it from the logo if the logo ever changes.
+
+  If the domain ever moves, these four absolute URLs move with it.
+-->
 <meta property="og:title" content="Le Manuia">
 <meta property="og:description" content="Free volleyball, academic support, and Gagana Samoa for Pacific Islander and Indigenous youth in South King County, Washington.">
-<meta property="og:image" content="logo-lagoon.png">
+<meta property="og:url" content="https://lemanuia.org/">
+<meta property="og:image" content="https://lemanuia.org/share-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Le Manuia">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..900&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&display=swap" rel="stylesheet">
@@ -235,6 +252,27 @@ h3{font-size:1.3rem;color:var(--lagoon)}
 /* ---------- give ---------- */
 .give{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:clamp(26px,4vw,48px);margin-top:42px}
 .give p{max-width:36ch}
+/* The fallback line under the Donate button. Same ink as the body copy around
+   it — this is an alternative, not fine print, and greying it out would be
+   telling the one visitor who needs it that it does not matter. */
+.give .aside{margin:16px 0 0;font-size:.93rem;line-height:1.6;max-width:34ch}
+
+/* .lag had no link colour of its own, so any plain link dropped into a lagoon
+   section inherited a{color:var(--lagoon)} and painted itself invisible
+   against its own background. Cream ink with the gold carried by the
+   underline: 6.96:1, where gold text on lagoon would have been 3.7:1 and
+   missed AA. Same trick index.html uses.
+
+   :not(.btn) matters. "a" is more specific than ".btn-gold", so an unscoped
+   rule here repaints the Donate button's label cream on gold — 1.9:1, and the
+   most important control on the page becomes the least readable thing on it. */
+.lag a:not(.btn){
+  color:var(--cream);
+  text-decoration-color:var(--gold);
+  text-decoration-thickness:2px;
+  text-underline-offset:3px;
+}
+.lag a:not(.btn):hover{text-decoration-thickness:3px}
 
 /* ---------- contact ---------- */
 .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:clamp(24px,4vw,54px);margin-top:34px}
@@ -250,11 +288,42 @@ footer a{color:var(--gold)}
 .tbd{background:rgba(227,167,47,.28);border-bottom:1px dashed #B4841F;padding:0 .22em;border-radius:2px}
 .dark .tbd,.lag .tbd{background:rgba(227,167,47,.3);border-bottom-color:var(--gold);color:var(--cream)}
 
-/* ---------- a11y ---------- */
-a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+/* ---------- a11y ----------
+   A single gold ring is invisible on more than half of this site. Gold on the
+   cream ground measures 1.88:1 and on cream-2 1.71:1, against a 3:1 floor for
+   a focus indicator — and on the gold Donate button it is 1:1, literally
+   nothing. Somebody navigating by keyboard loses their place at exactly the
+   moment they reach the most important control on the page.
+
+   So the gold band is sandwiched between two night bands, the treatment
+   index.html already uses. The two colours fail on opposite surfaces, which is
+   the point:
+
+     surface    gold ring   night ring
+     cream          1.88       13.67
+     cream-2        1.71       12.38
+     lagoon         3.70        1.96
+     night          7.26        1.00
+     gold button    1.00        7.26
+
+   One of the two always clears 3:1, and what you see on the lagoon and the
+   dark sections is still the site's own gold. */
+a:focus-visible,button:focus-visible,input:focus-visible{
+  outline:3px solid var(--gold);
+  outline-offset:2px;
+  box-shadow:0 0 0 2px var(--night),0 0 0 7px var(--night);
+}
 .skip{position:absolute;left:-9999px;background:var(--cream);color:var(--night);padding:12px 18px;z-index:99}
 .skip:focus{left:12px;top:12px}
 img{max-width:100%}
+
+/* Windows High Contrast: hand the indicator back to the user's own palette,
+   since neither gold nor night survives a forced-colours repaint. */
+@media (forced-colors:active){
+  a:focus-visible,button:focus-visible,input:focus-visible{
+    outline:3px solid Highlight;outline-offset:2px;box-shadow:none;
+  }
+}
 
 @media (prefers-reduced-motion:no-preference){
   .rise{opacity:0;transform:translateY(14px);animation:rise .8s cubic-bezier(.2,.7,.3,1) forwards}
@@ -314,9 +383,9 @@ img{max-width:100%}
   <svg class="lattice" aria-hidden="true"><rect width="100%" height="100%" fill="url(#lattice)"/></svg>
   <img class="laumei" src="symbol-lagoon.png" alt="" aria-hidden="true">
   <div class="wrap hero-in">
-    <p class="salu rise">Talofa lava.</p>
+    <p class="salu rise" lang="sm">Talofa lava.</p>
     <h1 class="rise">South King County has no shortage of volleyball players. It has a shortage of open courts.</h1>
-    <p class="lede rise">Le Manuia is a Samoan-led nonprofit in Kent, Washington. We run volleyball clinics, tutoring, and Gagana Samoa and Siva Samoa classes for Pacific Islander and Indigenous kids, and we don't charge for any of it.</p>
+    <p class="lede rise">Le Manuia is a Samoan-led nonprofit in Kent, Washington. We run volleyball clinics, tutoring, and <span lang="sm">Gagana Samoa</span> and <span lang="sm">Siva Samoa</span> classes for Pacific Islander and Indigenous kids, and we don't charge for any of it.</p>
     <div class="cta-row rise">
       <a class="btn btn-gold" href="#support">Fund a season</a>
       <a class="btn btn-line" href="#programs">See our programs</a>
@@ -352,7 +421,7 @@ img{max-width:100%}
       </svg>
       <div>
         <h3>Volleyball clinics and league play</h3>
-        <p class="sam">Ta'aloga</p>
+        <p class="sam" lang="sm">Ta'aloga</p>
         <p>Skills clinics and court time outside the club system, with real coaching. We cover the gym, the equipment, and the coaches. Our first clinic filled its roster and no family paid a cent.</p>
       </div>
     </div>
@@ -365,8 +434,8 @@ img{max-width:100%}
         <g fill="currentColor"><path d="M12 12 L30 12 L12 30 Z"/><path d="M88 88 L70 88 L88 70 Z"/></g>
       </svg>
       <div>
-        <h3>Gagana Samoa and Siva Samoa</h3>
-        <p class="sam">O le gagana ma le aganu'u</p>
+        <h3><span lang="sm">Gagana Samoa</span> and <span lang="sm">Siva Samoa</span></h3>
+        <p class="sam" lang="sm">O le gagana ma le aganu'u</p>
         <p>Language classes and traditional dance, taught by elders and practitioners from our own community. Kids learn enough to talk with their grandparents. No school in this district teaches either one.</p>
       </div>
     </div>
@@ -380,7 +449,7 @@ img{max-width:100%}
       </svg>
       <div>
         <h3>Academic support and youth assistance</h3>
-        <p class="sam">A'oa'oga</p>
+        <p class="sam" lang="sm">A'oa'oga</p>
         <p>Tutoring and study help, plus help with the things that quietly decide where a kid ends up: Running Start, the Washington College Grant, scholarship deadlines, and forms that assume a parent already knows how the system works. We also give youth assistance awards to students who meet our participation and academic criteria.</p>
       </div>
     </div>
@@ -434,12 +503,28 @@ img{max-width:100%}
       <div>
         <h3>Give</h3>
         <p>Most of what we spend goes to gym rental, equipment, and paying instructors. Donations are tax-deductible as allowed by law.</p>
-        <!-- TODO: replace this mailto with the Stripe checkout link when the donation flow is live -->
-        <a class="btn btn-gold" href="mailto:ama.tuatoo@lemanuia.org?subject=Donating%20to%20Le%20Manuia">Email us to give</a>
+        <!--
+          Live Givebutter campaign. Stripe is connected on the Givebutter side,
+          so nothing here configures payments — this is only the address.
+
+          It opens in a new tab so a half-finished donation does not cost the
+          visitor the page they were reading, and rel="noopener noreferrer"
+          is what makes a new tab safe to open.
+
+          The line under the button is not decoration. A button on its own is
+          a dead end for anyone whose card fails, who wants to give by check,
+          or who would simply rather talk to a person first.
+        -->
+        <a class="btn btn-gold"
+           href="https://givebutter.com/support-local-community-programs-with-le-manuia-dprbqd"
+           target="_blank" rel="noopener noreferrer">Donate</a>
+        <p class="aside">Rather give another way? Email
+          <a href="mailto:ama.tuatoo@lemanuia.org">ama.tuatoo@lemanuia.org</a>
+          or call <a href="tel:+12532612538">(253) 261-2538</a>. We take checks.</p>
       </div>
       <div>
         <h3>Volunteer</h3>
-        <p>We need coaches, tutors, siva and language instructors, and people who can work a clinic day.</p>
+        <p>We need coaches, tutors, <span lang="sm">siva</span> and language instructors, and people who can work a clinic day.</p>
         <a class="btn btn-line" href="#contact">Sign up to help</a>
       </div>
       <div>

@@ -10,15 +10,25 @@
   description of its own, or a search engine has no snippet to show. It says
   nothing the visible page below does not already say.
 
-  There is no og:image because the repository has no image suited to one: the
-  logo is cream artwork on transparency, which disappears on the white card
-  most apps draw. A proper share image would be a ~1200x630 PNG with a solid
-  lagoon background; drop it in and add the tag when there is one.
+  The share image this comment used to ask for now exists: share-card.png, a
+  1200x630 PNG on a solid lagoon ground, so the cream logo has something to sit
+  on instead of vanishing into the white card most apps draw. build-card.py
+  regenerates it from logo-cream.png.
+
+  This page matters more than site.html for sharing right now. lemanuia.org
+  serves this file, so a link pasted into email or a text message unfurls with
+  these tags, not the site's.
 -->
 <meta name="description" content="Le Manuia — our website is not public yet. If you need access, email ama.tuatoo@lemanuia.org.">
 <meta property="og:title" content="Le Manuia">
 <meta property="og:description" content="Our website is not public yet. If you need access, email ama.tuatoo@lemanuia.org.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://lemanuia.org/">
+<meta property="og:image" content="https://lemanuia.org/share-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Le Manuia">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
