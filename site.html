@@ -253,6 +253,54 @@ h3{font-size:1.3rem;color:var(--lagoon)}
 .partners{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px;padding:0;list-style:none}
 .partners li{border:1px solid rgba(11,91,90,.35);padding:10px 18px;font-size:.95rem}
 
+/* ---------- disclosure ----------
+   The funders block, folded away. Styled as one of the site's own outlined
+   buttons rather than as a link, because it behaves like a control. */
+.disclosure summary{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--display);font-variation-settings:"wdth" 92;
+  font-weight:700;font-size:.94rem;
+  color:var(--lagoon);
+  border:2px solid rgba(11,91,90,.45);
+  padding:13px 22px;cursor:pointer;
+  transition:background .18s,border-color .18s;
+  /* The default triangle is replaced by the +/− drawn below. Safari needs the
+     -webkit- line; list-style alone does not remove it there. */
+  list-style:none;
+}
+.disclosure summary::-webkit-details-marker{display:none}
+.disclosure summary:hover{background:rgba(11,91,90,.06);border-color:var(--lagoon)}
+/* A sign that states which way it goes: + closed, − open. Shape, not colour,
+   so it still reads in high contrast and for a colour-blind visitor. */
+.disclosure summary::after{
+  content:"+";font-size:1.15em;line-height:1;font-weight:700;
+}
+.disclosure[open] summary::after{content:"\2212"}   /* minus, not a hyphen */
+.disclosure[open] summary{margin-bottom:8px}
+.disclosure-body{padding-top:26px}
+.disclosure-body h2{margin-top:0}
+
+/* ---------- voices ---------- */
+.voices{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;margin-top:40px}
+.voice{margin:0;border-top:3px solid var(--gold);padding-top:18px}
+.voice blockquote{margin:0}
+.voice blockquote p{
+  font-size:clamp(1.05rem,1.6vw,1.2rem);line-height:1.6;margin:0;
+  /* Quotation marks belong to the typography, not the copy: this way nobody
+     has to remember to type them, and they cannot end up mismatched. */
+}
+.voice blockquote p::before{content:"\201C"}
+.voice blockquote p::after{content:"\201D"}
+.voice figcaption{
+  margin-top:14px;
+  font-family:var(--display);font-variation-settings:"wdth" 92;
+  font-weight:700;font-size:.9rem;color:var(--lagoon);
+}
+.voice figcaption span{
+  display:block;font-weight:400;font-size:.88rem;
+  color:var(--night);opacity:.72;margin-top:2px;
+}
+
 /* ---------- give ---------- */
 .give{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:clamp(26px,4vw,48px);margin-top:42px}
 .give p{max-width:36ch}
@@ -389,7 +437,7 @@ img{max-width:100%}
   <div class="wrap hero-in">
     <p class="salu rise" lang="sm">Talofa lava.</p>
     <h1 class="rise">South King County has no shortage of volleyball players. It has a shortage of open courts.</h1>
-    <p class="lede rise">Le Manuia is a Samoan-led nonprofit in Kent, Washington. We run volleyball clinics, tutoring, and <span lang="sm">Gagana Samoa</span> and <span lang="sm">Siva Samoa</span> classes for Pacific Islander and Indigenous kids, and we don't charge for any of it.</p>
+    <p class="lede rise">Le Manuia is a Samoan-led nonprofit in Kent, Washington. We run volleyball clinics, tutoring, and <span lang="sm">Gagana Samoa</span> and <span lang="sm">Siva Samoa</span> classes for Pacific Islander and Indigenous kids, free to families and made possible by donations and volunteers.</p>
     <div class="cta-row rise">
       <a class="btn btn-gold" href="#support">Fund a season</a>
       <a class="btn btn-line" href="#programs">See our programs</a>
@@ -427,6 +475,7 @@ img{max-width:100%}
         <h3>Volleyball clinics and league play</h3>
         <p class="sam" lang="sm">Ta'aloga</p>
         <p>Skills clinics and court time outside the club system, with real coaching. We cover the gym, the equipment, and the coaches. Our first clinic filled its roster and no family paid a cent.</p>
+        <p>For players whose next step is a club team, we also help with club membership fees and uniform costs as funds allow. Ask us — the money is the part families are told to solve alone, and it is the part we can sometimes carry.</p>
       </div>
     </div>
 
@@ -464,38 +513,101 @@ img{max-width:100%}
   <div class="wrap">
     <p class="eyebrow">Where we are</p>
     <h2>What we have done so far.</h2>
-    <div class="prose" style="margin-top:24px">
-      <p>We got our 501(c)(3) determination in January 2026 and ran our first clinic as soon as we had a gym. The numbers below are small because we are new. They are also real.</p>
-    </div>
+    <!--
+      UPDATE THE TALLY: change the number inside <span class="tbd"> below, and
+      delete the class="tbd" once it is a real count — that class is what draws
+      the gold highlight marking it as a placeholder. So this:
+
+        <p class="n"><span class="tbd">00</span></p>
+
+      becomes this:
+
+        <p class="n">37</p>
+    -->
     <div class="figures">
+      <div class="fig"><p class="n"><span class="tbd">00</span></p><p class="l">Youth served so far</p></div>
       <div class="fig"><p class="n">$0</p><p class="l">Charged to any family, for any program, ever</p></div>
       <div class="fig"><p class="n">Jan 2026</p><p class="l">501(c)(3) determination and first month of operations</p></div>
     </div>
   </div>
 </section>
 
+<section id="voices" class="tint">
+  <div class="wrap">
+    <p class="eyebrow">In their words</p>
+    <h2>What families tell us.</h2>
+
+    <!--
+      ============================================================================
+      HOW TO ADD A QUOTE
+
+      Copy one <figure> block below, paste it inside <div class="voices">, and
+      replace the words. Delete the placeholder block once you have a real one.
+
+        <figure class="voice">
+          <blockquote>
+            <p>The quote goes here, in the words they actually used.</p>
+          </blockquote>
+          <figcaption>Their name<span>who they are</span></figcaption>
+        </figure>
+
+      Two or three good ones beat a wall of them. They read best in pairs.
+
+      Before you publish somebody's words, get their say-so, and ask how they
+      want to be named. A first name and a role ("Malia, parent") is enough and
+      is the safer default. Do not identify a child by full name, do not name
+      the school a kid attends, and if a parent is describing something hard
+      about their family, let them read the exact wording first.
+      ============================================================================
+    -->
+
+    <div class="voices">
+      <figure class="voice">
+        <blockquote>
+          <p><span class="tbd">Quotes from families, players and volunteers go here. Replace this block with a real one — the comment just above this line in the file shows the shape.</span></p>
+        </blockquote>
+      </figure>
+    </div>
+  </div>
+</section>
+
 <section id="accountability">
   <div class="wrap">
-    <p class="eyebrow">For funders and partners</p>
-    <h2>The details a grant reviewer needs, in one place.</h2>
-    <div class="prose" style="margin-top:24px">
-      <p>Our governance documents are current. If your review needs something that isn't listed here, ask and we'll send it the same week.</p>
-    </div>
-    <ul class="facts">
-      <li><span class="k">Legal name</span><p class="v">Le Manuia</p></li>
-      <li><span class="k">Tax status</span><p class="v">501(c)(3) public charity, determination received January 2026</p></li>
-      <li><span class="k">EIN</span><p class="v">85-3487759</p></li>
-      <li><span class="k">State registration</span><p class="v">Washington State nonprofit corporation; registered with the Secretary of State Charities Program, UBI 604 550 597</p></li>
-      <li><span class="k">Service area</span><p class="v">South King County, Washington — Auburn, Kent, Federal Way, and surrounding communities</p></li>
-      <li><span class="k">Populations served</span><p class="v">Pacific Islander, Native Hawaiian, and Indigenous youth and their families</p></li>
-      <li><span class="k">Fiscal year</span><p class="v">January 1 – December 31</p></li>
-      <li><span class="k">Financial documents</span><p class="v">Form 990, budget, and board-approved financial policies available on request</p></li>
-    </ul>
+    <!--
+      Folded away by default. This block is for grant reviewers and nobody else,
+      and a wall of registration numbers between a parent and the "how do I sign
+      my kid up" part of the page is a wall in the wrong place.
 
-    <p class="eyebrow" style="margin-top:54px">Our funders and partners</p>
-    <ul class="partners">
-      <li>Puyallup Tribe of Indians Charitable Trust</li>
-    </ul>
+      <details>/<summary> is the browser's own disclosure widget. It needs no
+      JavaScript, it opens with Enter or Space, screen readers announce it as a
+      collapsed group, and Ctrl-F in most browsers now opens it to reach the text
+      inside — none of which is true of a hand-rolled toggle.
+    -->
+    <details class="disclosure">
+      <summary>For Funders / Reviewers</summary>
+      <div class="disclosure-body">
+        <h2>The details a grant reviewer needs, in one place.</h2>
+        <div class="prose" style="margin-top:24px">
+          <p>Our governance documents are current. If your review needs something that isn't listed here, ask and we'll send it the same week.</p>
+        </div>
+        <ul class="facts">
+          <li><span class="k">Legal name</span><p class="v">Le Manuia</p></li>
+          <li><span class="k">Tax status</span><p class="v">501(c)(3) public charity, determination received January 2026</p></li>
+          <li><span class="k">EIN</span><p class="v">85-3487759</p></li>
+          <li><span class="k">State registration</span><p class="v">Washington State nonprofit corporation; registered with the Secretary of State Charities Program, UBI 604 550 597</p></li>
+          <li><span class="k">Service area</span><p class="v">South King County, Washington — Auburn, Kent, Federal Way, and surrounding communities</p></li>
+          <li><span class="k">Populations served</span><p class="v">Pacific Islander and Indigenous youth and their families</p></li>
+          <li><span class="k">Fiscal year</span><p class="v">January 1 – December 31</p></li>
+          <li><span class="k">Financial documents</span><p class="v">Form 990, budget, and board-approved financial policies available on request</p></li>
+        </ul>
+
+        <p class="eyebrow" style="margin-top:54px">Our Funders and Partners</p>
+        <ul class="partners">
+          <li>Puyallup Tribe of Indians Charitable Trust</li>
+          <li>Ama Tuato'o</li>
+        </ul>
+      </div>
+    </details>
   </div>
 </section>
 
@@ -523,18 +635,26 @@ img{max-width:100%}
            href="https://givebutter.com/support-local-community-programs-with-le-manuia-dprbqd"
            target="_blank" rel="noopener noreferrer">Donate</a>
         <p class="aside">Rather give another way? Email
-          <a href="mailto:ama.tuatoo@lemanuia.org">ama.tuatoo@lemanuia.org</a>
+          <a href="mailto:support@lemanuia.org">support@lemanuia.org</a>
           or call <a href="tel:+12532612538">(253) 261-2538</a>. We take checks.</p>
       </div>
       <div>
         <h3>Volunteer</h3>
         <p>We need coaches, tutors, <span lang="sm">siva</span> and language instructors, and people who can work a clinic day.</p>
-        <a class="btn btn-line" href="#contact">Sign up to help</a>
+        <!--
+          Opens the visitor's mail app with the address and subject already in
+          it. The subject is what sorts these out of the inbox, so keep the two
+          buttons' subjects distinct.
+
+          %20 is a space. Mail apps are strict about it: a literal space here
+          breaks the link in some of them, so the subject has to stay encoded.
+        -->
+        <a class="btn btn-line" href="mailto:support@lemanuia.org?subject=Le%20Manuia%20Volunteer%20Signup">Sign up to help</a>
       </div>
       <div>
         <h3>Partner</h3>
         <p>If you run a gym, a district program, or a business that wants to sponsor a season, we'd like to hear from you.</p>
-        <a class="btn btn-line" href="#contact">Start a conversation</a>
+        <a class="btn btn-line" href="mailto:support@lemanuia.org?subject=Le%20Manuia%20Partnership">Start a conversation</a>
       </div>
     </div>
   </div>
@@ -548,13 +668,13 @@ img{max-width:100%}
       <div>
         <h3>For families</h3>
         <p>Ask about enrolling your child, upcoming clinics, or youth assistance.<br>
-        <a href="mailto:ama.tuatoo@lemanuia.org">ama.tuatoo@lemanuia.org</a><br>
+        <a href="mailto:support@lemanuia.org">support@lemanuia.org</a><br>
         <a href="tel:+12532612538">(253) 261-2538</a></p>
       </div>
       <div>
         <h3>For funders and press</h3>
-        <p>Ama Tuatoo, Founder<br>
-        <a href="mailto:ama.tuatoo@lemanuia.org">ama.tuatoo@lemanuia.org</a><br>
+        <p>Anya Fareti, Founder<br>
+        <a href="mailto:support@lemanuia.org">support@lemanuia.org</a><br>
         <a href="tel:+12532612538">(253) 261-2538</a></p>
       </div>
       <div>
